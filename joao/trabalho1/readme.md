@@ -1,4 +1,4 @@
-# Descritiva dos dados de Neoplastia divididos em macroregiões
+# Descritiva dos dados de Neoplasia divididos em macroregiões
 
 Aluno: João Paulo de Paiva Holz    
 Professor: Ivan Robert Enriquez Guzman  
@@ -224,7 +224,7 @@ def plot_lines_to_0a5():
     ano = pd.DataFrame(np.arange(2000,2020))
     ano.columns = ['ano']
     denominador = pop.iloc[3:,:].iloc[:,1:4].apply(lambda x: x*get_pop_by_faixa()['0a4']).dropna()
-    taxa = pd.concat([(teste.iloc[:,1:4]/denominador).iloc[:-1,:],ano],axis=1)*1000
+    taxa = pd.concat([(teste.iloc[:,1:4]/denominador).iloc[:-1,:],ano],axis=1)*100_000
     plot_lines(taxa,xcol = 'ano',title= title + ' - 0 a 4 Anos')
     
 def plot_lines_to_5a9():
@@ -243,7 +243,7 @@ def plot_lines_to_5a9():
     ano = pd.DataFrame(np.arange(2000,2020))
     ano.columns = ['ano']
     denominador = pop.iloc[3:,:].iloc[:,1:4].apply(lambda x: x*get_pop_by_faixa()['5a9']).dropna()
-    taxa = pd.concat([(teste.iloc[:,1:4]/denominador).iloc[:-1,:],ano],axis=1)*1000
+    taxa = pd.concat([(teste.iloc[:,1:4]/denominador).iloc[:-1,:],ano],axis=1)*100_000
     #taxa = pd.concat([(teste.iloc[:,1:4]/pop.iloc[:,1:4]).iloc[:-1,:],ano],axis=1)
     plot_lines(taxa,xcol = 'ano',title= title + ' - 5 a 9 Anos')
     
@@ -263,7 +263,7 @@ def plot_lines_to_10a15():
     ano = pd.DataFrame(np.arange(2000,2020))
     ano.columns = ['ano']
     denominador = pop.iloc[3:,:].iloc[:,1:4].apply(lambda x: x*get_pop_by_faixa()['5a9']).dropna()
-    taxa = pd.concat([(teste.iloc[:,1:4]/denominador).iloc[:-1,:],ano],axis=1)*1000
+    taxa = pd.concat([(teste.iloc[:,1:4]/denominador).iloc[:-1,:],ano],axis=1)*100_000
     #taxa = pd.concat([(teste.iloc[:,1:4]/pop.iloc[:,1:4]).iloc[:-1,:],ano],axis=1)
     plot_lines(taxa,xcol = 'ano',title= title + ' - 10 a 14 Anos')
 ```
@@ -294,7 +294,7 @@ plot_lines_to_0a5()
 
 
 ```python
-plot_lines_to_0a5()
+plot_lines_to_5a9()
 ```
 
 
@@ -351,37 +351,36 @@ percen_pop['sumpercen'] = percen_pop['0a4'] + percen_pop['5a9'] + percen_pop['10
 ```python
 def plot_evolucao_mapa():
     fig, axes = plt.subplots(2,3)
-
     fig.suptitle('Evolução da taxa de Neoplasia',fontsize=20)
 
-    vmax = 7/(732490*0.300418)
+    vmax = 7/(732490*0.300418)*100_000
     # [norte,sul,metropolitana]
-    x['value'] = list(map(lambda x: x*(1/0.300418),[7/732490,1/545491, 7/1660081]))
+    x['value'] = list(map(lambda x: x*(1/0.300418)*100_000,[7/732490,1/545491, 7/1660081]))
     _ = x.plot(x['value'],cmap="crest",legend=True,ax=axes[0][0],vmax=vmax)
     _ = axes[0][0].title.set_text('1999')
     _ = axes[0,0].axis('off')
 
-    x['value'] = [4/(773930*0.286621),2/(609420*0.286621),6/(1866869*0.286621)]
+    x['value'] = [4*100_000/(773930*0.286621),2*100_000/(609420*0.286621),6*100_000/(1866869*0.286621)]
     _ = x.plot(x['value'],cmap="crest",legend=True,ax=axes[0][1],vmax=vmax)
     _ = axes[0][1].title.set_text('2003')
     _ = axes[0,1].axis('off')
 
-    x['value'] = list(map(lambda x: x*(1/0.268982),[4/786492,2/607461,6/1957716]))
+    x['value'] = list(map(lambda x: x*(1/0.268982)*100_000,[4/786492,2/607461,6/1957716]))
     _ = x.plot(x['value'],cmap="crest",legend=True,ax=axes[0][2],vmax=vmax)
     _ = axes[0][2].title.set_text('2007')
     _ = axes[0,2].axis('off')
 
-    x['value'] = list(map(lambda x: x*(1/0.250804),[4/854539,2/626503,6/2066013]))
+    x['value'] = list(map(lambda x: x*(1/0.250804)*100_000,[4/854539,2/626503,6/2066013]))
     _ = x.plot(x['value'],cmap="crest",legend=True,ax=axes[1][0],vmax=vmax)
     _ = axes[1][0].title.set_text('2011')
     _ = axes[1,0].axis('off')
 
-    x['value'] = list(map(lambda x: x*(1/0.231885),[4/943971,2/680871,6/2305069]))
+    x['value'] = list(map(lambda x: x*(1/0.231885)*100_000,[4/943971,2/680871,6/2305069]))
     _ = x.plot(x['value'],cmap="crest",legend=True,ax=axes[1][1],vmax=vmax)
     _ = axes[1][1].title.set_text('2015')
     _ = axes[1,1].axis('off')
 
-    x['value'] = list(map(lambda x: x*(1/0.213184),[4/961446,2/678071,6/2379133]))
+    x['value'] = list(map(lambda x: x*(1/0.213184)*100_000,[4/961446,2/678071,6/2379133]))
     _ = x.plot(x['value'],cmap="crest",legend=True,ax=axes[1][2],vmax=vmax)
     _ = axes[1][2].title.set_text('2019')
     _ = axes[1,2].axis('off')
@@ -396,6 +395,145 @@ plot_evolucao_mapa()
     
 ![png](images/output_28_0.png)
     
+
+
+## Modelo
+
+
+```python
+import statsmodels.tsa.stattools as smt
+from statsmodels.tsa.api import VAR
+```
+
+
+```python
+totalizador = df.groupby(['Ano do Óbito']).sum()
+serie_met = totalizador.iloc[:,1]
+serie_sul = totalizador.iloc[:,0]
+serie_nor = totalizador.iloc[:,2]
+```
+
+
+```python
+def plot_ccf_sm(target, exog, unbiased=False, nlags=30):
+    """Plot CCF using Statsmodels"""
+    ccfs = smt.ccf(target, exog, adjusted=False)[:nlags+1]
+    lags = np.arange(len(ccfs))[:nlags+1]
+    _ = plt.stem(lags, ccfs, use_line_collection=True)
+    _ = plt.title(f"Cross Correlation (Statsmodels): {target.name} & {exog.name}")
+    _ = plt.show()
+```
+
+
+```python
+plot_ccf_sm(serie_sul,serie_met)
+plot_ccf_sm(serie_met,serie_sul)
+plot_ccf_sm(serie_sul,serie_nor)
+plot_ccf_sm(serie_nor,serie_sul)
+plot_ccf_sm(serie_nor,serie_met)
+plot_ccf_sm(serie_met,serie_nor)
+```
+
+
+    
+![png](images/output_33_0.png)
+    
+
+
+
+    
+![png](images/output_33_1.png)
+    
+
+
+
+    
+![png](images/output_33_2.png)
+    
+
+
+
+    
+![png](images/output_33_3.png)
+    
+
+
+
+    
+![png](images/output_33_4.png)
+    
+
+
+
+    
+![png](images/output_33_5.png)
+    
+
+
+
+```python
+model = VAR(totalizador.iloc[:,0:3])
+fitted = model.fit()
+fitted.summary()
+```
+
+    /home/joaoholz/miniconda3/envs/lestat/lib/python3.10/site-packages/statsmodels/tsa/base/tsa_model.py:471: ValueWarning: An unsupported index was provided and will be ignored when e.g. forecasting.
+      self._init_dates(dates, freq)
+
+
+
+
+
+      Summary of Regression Results   
+    ==================================
+    Model:                         VAR
+    Method:                        OLS
+    Date:           Mon, 19, Dec, 2022
+    Time:                     13:02:18
+    --------------------------------------------------------------------
+    No. of Equations:         3.00000    BIC:                    4.19363
+    Nobs:                     24.0000    HQIC:                   3.76088
+    Log likelihood:          -133.419    FPE:                    37.1151
+    AIC:                      3.60461    Det(Omega_mle):         23.3728
+    --------------------------------------------------------------------
+    Results for equation SUL
+    ===================================================================================
+                          coefficient       std. error           t-stat            prob
+    -----------------------------------------------------------------------------------
+    const                    0.601047         1.013667            0.593           0.553
+    L1.SUL                  -0.165286         0.216538           -0.763           0.445
+    L1.METROPOLITANA         0.220977         0.122649            1.802           0.072
+    L1.CENTRAL NORTE         0.013458         0.174905            0.077           0.939
+    ===================================================================================
+    
+    Results for equation METROPOLITANA
+    ===================================================================================
+                          coefficient       std. error           t-stat            prob
+    -----------------------------------------------------------------------------------
+    const                    8.162002         1.620434            5.037           0.000
+    L1.SUL                  -0.896446         0.346155           -2.590           0.010
+    L1.METROPOLITANA         0.272347         0.196065            1.389           0.165
+    L1.CENTRAL NORTE        -0.349771         0.279600           -1.251           0.211
+    ===================================================================================
+    
+    Results for equation CENTRAL NORTE
+    ===================================================================================
+                          coefficient       std. error           t-stat            prob
+    -----------------------------------------------------------------------------------
+    const                    3.623198         1.206409            3.003           0.003
+    L1.SUL                  -0.387451         0.257711           -1.503           0.133
+    L1.METROPOLITANA         0.165595         0.145970            1.134           0.257
+    L1.CENTRAL NORTE        -0.322966         0.208161           -1.552           0.121
+    ===================================================================================
+    
+    Correlation matrix of residuals
+                          SUL  METROPOLITANA  CENTRAL NORTE
+    SUL              1.000000       0.098027       0.234534
+    METROPOLITANA    0.098027       1.000000      -0.074210
+    CENTRAL NORTE    0.234534      -0.074210       1.000000
+    
+
+
 
 
 
