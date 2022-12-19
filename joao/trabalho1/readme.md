@@ -1,4 +1,4 @@
-# Descritiva dos dados de Neoplastia divididos em macroregiões
+# Descritiva dos dados de Neoplasia divididos em macroregiões
 
 Aluno: João Paulo de Paiva Holz    
 Professor: Ivan Robert Enriquez Guzman  
