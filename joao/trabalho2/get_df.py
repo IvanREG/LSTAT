@@ -37,3 +37,15 @@ def get_data():
 def get_data_for_ml():
     df = get_data()
     return pd.concat([df,make_dummies(df.month)],axis = 1)
+
+def get_dfs_for_ml(column_token = 'precipitacao'):
+    df = get_data_for_ml()
+    cols_to_keep = ['date_time']+list(filter(lambda x: column_token in x, df.columns)) + list(df.columns[-19:])
+    cols_to_keep = list(filter(lambda x: x not in ['hour','month','year','day_of_year','weekofyear'], cols_to_keep))
+    df = df[cols_to_keep]
+    df_just_stocastic = df.iloc[:,:5]
+    df_just_stocastic.columns = ['date_time','A613','A614','A634','A612']
+    df.index = df.date_time
+    df = df.resample('1D').mean()
+    df.drop(['hour_9', 'hour_9**2','hour_9**3'],axis=1,inplace=True)
+    return df,df_just_stocastic
