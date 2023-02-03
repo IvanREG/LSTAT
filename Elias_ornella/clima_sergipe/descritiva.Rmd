@@ -19,9 +19,15 @@ library(ggstatsplot)
 library(patchwork)
 library(modelsummary)
 library(ggthemes)
+library("tseries")
+library("itsmr")
+library("tsibble")
+library("forecast")
+library("TSA")
+library(MTS)
 ```
 
-Neste trabalho, uma análise de Séries Temporais será feita para avaliar a temperatura do estado de Sergipe com base em covariáveis tais quais: elevação atmosférica, precipitação, radiação, umidade, pressão atmosfésrica e velocidade do vento. A base de dados em análise contém 159.672 observações coletadas da estação Alagoas, em Sergipe, no período de 2000 a 2021.
+Neste trabalho, uma análise de Séries Temporais será feita para avaliar a temperatura do estado de Sergipe com base em covariáveis tais quais: elevação atmosférica, precipitação, radiação, umidade, pressão atmosfésrica e velocidade do vento. A base de dados em análise contém 159.672 observações coletadas por hora da estação Alagoas, em Sergipe, no período de 2000 a 2021.
 
 ```{r echo=FALSE}
 #nordeste <- read.csv("northeast.csv")
@@ -61,7 +67,7 @@ Inicialmente, construímos uma tabela em que podem ser vistas as principais medi
 
 ```{r echo=FALSE}
 var <- sergipe %>% 
-  select(height, prcp, radiacao, umidade, press_atm,
+  dplyr::select(height, prcp, radiacao, umidade, press_atm,
          vento_velo, temp)
 
 datasummary_skim(
@@ -168,21 +174,7 @@ dt1 <- sergipe |>
 #   theme_bw()
 ```
 
-Gráficos _cross-correlation_ entre temperatura e demais covariáveis.
-
-```{r}
-nomes <- names(sergipe[ , c(-1, -2, -3, -4, -10, -12)])
-
-for (var in nomes) {
-  print(paste('A variável em análise é:', var))
-  
-  cv <- sergipe %>%
-    select(var, 'temp') %>%
-    na.omit()
-  
-  print(ccf(cv[, var], cv[, 'temp'], p1 = TRUE))
-}
-```
+### Análise temporal univariada
 
 Série estacionária com uma diferenciação, conforme gráfico da série a seguir.
 
@@ -239,4 +231,94 @@ previsao
 plot(previsao)
 ```
 
+### Análise temporal multivariada
+
+Gráficos _cross-correlation_ entre temperatura e demais covariáveis. Variáveis selecionadas: precipitação, umidade e velocidade do vento.
+
+```{r}
+nomes <- names(sergipe[ , c(-1, -2, -3, -4, -10, -12)])
+
+for (var in nomes) {
+  print(paste('A variável em análise é:', var))
+  
+  cv <- sergipe %>%
+    select(var, 'temp') %>%
+    na.omit()
+  
+  print(ccf(cv[, var], cv[, 'temp'], p1 = TRUE))
+}
+```
+
+Dados faltantes nas covariáveis precipitação, umidade e velocidade do vento. 
+
+```{r}
+dt1 <- sergipe |>
+  group_by(month = lubridate::floor_date(data, "month")) |>
+  filter(!is.na(temp)) |>
+  group_by(month) |>
+  summarise(temperatura = mean(temp),
+            precip = mean(prcp),
+            umid = mean(umidade),
+            vento_velo = mean(vento_velo),
+            press_atm = mean(press_atm))
+
+dt1 <- dt1[, -1]
+
+plot.ts(dt1)
+```
+
+Inputação de dados por interpolação linear.
+
+```{r}
+dt1[, "precip"] <- forecast::na.interp(dt1[, "precip"])
+dt1[, "umid"] <- forecast::na.interp(dt1[, "umid"])
+dt1[, "vento_velo"] <- forecast::na.interp(dt1[, "vento_velo"])
+
+plot.ts(dt1)
+```
+
+Séries temporais das variáveis aparentemente estacionárias.
+
+```{r}
+serie <- ts(dt1)
+dados_diff <- diff(serie)
+plot.ts(dados_diff)
+```
+
+Gráfico ACF da série.
+
+```{r}
+acf(dados_diff)
+```
+
+Correlação cruzada extendida para identificar ordens $p$ e $q$.
+
+_*p: número de observações de defasagem incluídas no modelo, também conhecido como ordem de defasagem_
+_*d: grau de diferenciação_
+_*q: ordem da média móvel_
+
+
+```{r}
+Eccm(dados_diff)
+```
+
+Ajuste do modelo VARMA(p=0,q=2).
+
+```{r}
+model_best <- VARMA(dados_diff, p = 0, q = 2)
+
+summary(model_best)
+```
+
+Análise diagnóstico.
+
+```{r}
+tsdisplay(residuals(model_best))
+```
+
+Predições.
+
+```{r}
+predictions <- VARMApred(model_best, h = 20)
+```
 
