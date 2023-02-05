@@ -108,6 +108,8 @@ Em primeiro lugar, construímos gráficos de linhas para cada uma das variáveis
 
 Como podemos observar na Figura 2, com a exceção da temperatura e pressão atmosférica, existem muitos dados faltantes (especialmente na variável de umidade). O que é um grande problema em análise de séries temporais, pois dificulta o processamento dos dados e pode causar riscos para a identificação de tendências e observação de padrões, por exemplo. Porém, em vez de remover essas informações faltantes da análise, optamos por fazer inputação por meio da interpolação linear, cuja estimação dos valores acontece dentro de um intervalo conhecido, a partir dos pontos extremos deste intervalo.
 
+Vale mencionar que testamos os métodos de inputação via interpolação por splines, por médias móveis e suavição de Kalman, mas o que melhor se adaptou às dinâmicas das séries foi o método por interpolação linear.
+
 ```{r fig.cap='Séries das variáveis de temperatura, velocidade do vento, precipitação, pressão atmosférica e umidade.'}
 # remove a variável de data
 
