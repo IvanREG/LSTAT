@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<metadata>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/&gt;
+&lt;title&gt;Lim_Microrregiao&lt;/title&gt;
+&lt;link rel="schema.dc" href="http://purl.org/metadata/dublin_core"/&gt;
+&lt;meta name="dc.title" content="Lim_Microrregiao "/&gt;
+&lt;meta name="dc.creator" content="DTCAR/IDAF "/&gt;
+&lt;meta name="dc.subject" content="Munic&amp;iacute;pios Limite Regi&amp;atilde;o Esp&amp;iacute;rito Santo "/&gt;
+&lt;meta name="dc.description" content="Este layer de limite regional foi criado pela Coordena&amp;ccedil;&amp;atilde;o de Geoprocessamento do Instituto Jones dos Santos Neves, com o intuito de representar a microrregionaliza&amp;ccedil;&amp;atilde;o de planejamento elaborada pela Secretaria de Estado de Planejamento do ES, com a finalidade de gerir, administrar e planejar melhor o territ&amp;oacute;rio capixaba, conforme a lei 9.768 de 2011. "/&gt;
+&lt;meta name="dc.publisher" content="REQUIRED: The organization responsible for the metadata information."/&gt;
+&lt;meta name="dc.contributor" content="Secretaria de Estado e Planejamento e Instituto Jones dos Sanots Neves "/&gt;
+&lt;meta name="dc.date" content="Agosto de 2010"/&gt;
+&lt;meta name="dc.type" content="data.vector digital data"/&gt;
+&lt;meta name="dc.identifier" content="www.geobases.es.gov.br"/&gt;
+&lt;meta name="dc.source" content="Downloadable Data"/&gt;
+&lt;meta name="dc.lang" content="en"/&gt;
+&lt;meta name="dc.coverage.x.min" scheme="DD" content="-41.889440"/&gt;
+&lt;meta name="dc.coverage.x.max" scheme="DD" content="-39.662470"/&gt;
+&lt;meta name="dc.coverage.y.min" scheme="DD" content="-21.313495"/&gt;
+&lt;meta name="dc.coverage.y.max" scheme="DD" content="-17.878043"/&gt;
+&lt;meta name="dc.coverage.placeName" content="Esp&amp;iacute;rito Santo"/&gt;
+&lt;meta name="dc.rights" content="Access constraints: N&amp;atilde;o tem restri&amp;ccedil;&amp;atilde;o para acesso deste layer.; Use constraints: N&amp;atilde;o existe restri&amp;ccedil;&amp;atilde;o de uso, por&amp;eacute;m, preferencialmente dever&amp;aacute; ser usado com os outros shapes da mesma escala."/&gt;
+&lt;meta name="generated-from" content="c:\users\rodrigo\appdata\local\temp\export0.xml"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Lim_Microrregiao&lt;/h1&gt;
+<metadata>also available as&lt;p&gt;</metadata>
+&lt;h4&gt;Frequently-anticipated questions:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#what"&gt;What does this data set describe?&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="#what.1"&gt;How should this data set be cited?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what.2"&gt;What geographic area does the data set cover?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what.3"&gt;What does it look like?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what.4"&gt;Does the data set describe conditions during a particular time period?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what.5"&gt;What is the general form of this data set?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what.6"&gt;How does the data set represent geographic features?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what.7"&gt;How does the data set describe geographic features?&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#who"&gt;Who produced the data set?&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="#who.1"&gt;Who are the originators of the data set?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#who.2"&gt;Who also contributed to the data set?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#who.3"&gt;To whom should users address questions about the data?&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#why"&gt;Why was the data set created?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#how"&gt;How was the data set created?&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="#how.1"&gt;From what previous works were the data drawn?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#how.2"&gt;How were the data generated, processed, and modified?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#how.3"&gt;What similar or related data should the user be aware of?&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#quality"&gt;How reliable are the data; what problems remain in the data set?&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="#quality.1"&gt;How well have the observations been checked?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#quality.2"&gt;How accurate are the geographic locations?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#quality.3"&gt;How accurate are the heights or depths?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#quality.4"&gt;Where are the gaps in the data?  What is missing?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#quality.5"&gt;How consistent are the relationships among the data, including topology?&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#getacopy"&gt;How can someone get a copy of the data set?&lt;/a&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="#getacopy.0"&gt;Are there legal restrictions on access or use of the data?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#getacopy.1"&gt;Who distributes the data?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#getacopy.2"&gt;What's the catalog number I need to order this data set?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#getacopy.3"&gt;What legal disclaimers am I supposed to read?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#getacopy.4"&gt;How can I download or order the data?&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#metaref"&gt;Who wrote the metadata?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr/&gt;
+&lt;h3&gt;&lt;a name="what"&gt;What does this data set describe?&lt;/a&gt;&lt;/h3&gt;
+&lt;div style="margin-left: 2em"&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;em&gt;Title:&lt;/em&gt;  Lim_Microrregiao&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;Abstract:&lt;/em&gt;
+&lt;dd&gt;
+
+Este layer de limite regional foi criado pela Coordena&amp;ccedil;&amp;atilde;o de Geoprocessamento do Instituto Jones dos Santos Neves, com o intuito de representar a microrregionaliza&amp;ccedil;&amp;atilde;o de planejamento elaborada pela Secretaria de Estado de Planejamento do ES, com a finalidade de gerir, administrar e planejar melhor o territ&amp;oacute;rio capixaba, conforme a lei 9.768 de 2011.
+
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a name="what.1"&gt;&lt;b&gt;How should this data set be cited?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;blockquote&gt;
+DTCAR/IDAF, Agosto de 2010, Lim_Microrregiao.&lt;p&gt;
+Online Links:
+&lt;ul&gt;
+&lt;li&gt;www.geobases.es.gov.br
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="what.2"&gt;&lt;b&gt;What geographic area does the data set cover?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;em&gt;West_Bounding_Coordinate:&lt;/em&gt;  -41.889440&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;East_Bounding_Coordinate:&lt;/em&gt;  -39.662470&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;North_Bounding_Coordinate:&lt;/em&gt;  -17.878043&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;South_Bounding_Coordinate:&lt;/em&gt;  -21.313495&lt;/dt&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="what.3"&gt;&lt;b&gt;What does it look like?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="what.4"&gt;&lt;b&gt;Does the data set describe conditions during a particular time period?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;dl&gt;
+&lt;dt&gt;Calendar_Date: unknown&lt;dt&gt;&lt;em&gt;Currentness_Reference:&lt;/em&gt;  publication date&lt;/dt&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="what.5"&gt;&lt;b&gt;What is the general form of this data set?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;em&gt;Geospatial_Data_Presentation_Form:&lt;/em&gt;  vector digital data&lt;/dt&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="what.6"&gt;&lt;b&gt;How does the data set represent geographic features?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;ol type="a"&gt;
+&lt;li&gt;&lt;a name="what.6.a"&gt;&lt;b&gt;How are geographic features stored in the data set?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+This is a Vector data set.
+It contains the following vector data types (SDTS terminology):
+&lt;ul&gt;
+&lt;li&gt;G-polygon (10)
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="what.6.b"&gt;&lt;b&gt;What coordinate system is used to represent geographic features?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+The map projection used is Transverse Mercator.&lt;p&gt;
+&lt;dl&gt;
+&lt;dt&gt;Projection parameters:
+&lt;dd&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;em&gt;Scale_Factor_at_Central_Meridian:&lt;/em&gt;  0.999600&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;Longitude_of_Central_Meridian:&lt;/em&gt;  -39.000000&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;Latitude_of_Projection_Origin:&lt;/em&gt;  0.000000&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;False_Easting:&lt;/em&gt;  500000.000000&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;False_Northing:&lt;/em&gt;  10000000.000000&lt;/dt&gt;
+&lt;/dl&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+<planar>coordinates are encoded using coordinate pair&lt;br/&gt;</planar>
+Abscissae (x-coordinates) are specified to the nearest 0.000000&lt;br/&gt;
+Ordinates (y-coordinates) are specified to the nearest 0.000000&lt;br/&gt;
+<planar>coordinates are specified in meters&lt;p&gt;</planar>
+&lt;p&gt;
+The horizontal datum used is D_SIRGAS_2000.&lt;br/&gt;
+The ellipsoid used is Geodetic Reference System 80.&lt;br/&gt;
+The semi-major axis of the ellipsoid used is 6378137.000000.&lt;br/&gt;
+The flattening of the ellipsoid used is 1/298.257222.&lt;br/&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="what.7"&gt;&lt;b&gt;How does the data set describe geographic features?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;b&gt;&lt;tt&gt;Lim_Microrregiao&lt;/tt&gt;&lt;/b&gt;&lt;dd&gt;&lt;p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;b&gt;&lt;tt&gt;FID&lt;/tt&gt;&lt;/b&gt;&lt;dd&gt;Internal feature number.
+(Source: ESRI)&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;em&gt;
+Sequential unique whole numbers that are automatically generated.
+&lt;/em&gt;
+&lt;p&gt;
+&lt;dt&gt;&lt;b&gt;&lt;tt&gt;Shape&lt;/tt&gt;&lt;/b&gt;&lt;dd&gt;Feature geometry.
+(Source: ESRI)&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;em&gt;
+Coordinates defining the features.
+&lt;/em&gt;
+&lt;p&gt;
+&lt;dt&gt;&lt;b&gt;&lt;tt&gt;NOME&lt;/tt&gt;&lt;/b&gt;&lt;dd&gt;  (Source: Nome oficial dos munic&amp;iacute;pios)&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;dt&gt;&lt;b&gt;&lt;tt&gt;areaKm2&lt;/tt&gt;&lt;/b&gt;&lt;dd&gt;&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;dt&gt;&lt;b&gt;&lt;tt&gt;FONTE&lt;/tt&gt;&lt;/b&gt;&lt;dd&gt;&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;dt&gt;&lt;b&gt;&lt;tt&gt;DATA&lt;/tt&gt;&lt;/b&gt;&lt;dd&gt;  (Source: M&amp;ecirc;s e ano da conclus&amp;atilde;o do layer)&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+&lt;hr/&gt;
+&lt;h3&gt;&lt;a name="who"&gt;Who produced the data set?&lt;/a&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a name="who.1"&gt;&lt;b&gt;Who are the originators of the data set?&lt;/b&gt;&lt;/a&gt; (may include formal authors, digital compilers, and editors)&lt;p&gt;
+&lt;ul&gt;
+&lt;li&gt;DTCAR/IDAF
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="who.2"&gt;&lt;b&gt;Who also contributed to the data set?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;blockquote&gt;
+Secretaria de Estado e Planejamento e Instituto Jones dos Sanots Neves
+&lt;/blockquote&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="who.3"&gt;&lt;b&gt;To whom should users address questions about the data?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;div style="margin-left: 2em"&gt;
+Rodrigo Bergamaschi&lt;br/&gt;
+CGEO/IJSN&lt;br/&gt;
+&lt;p&gt;
+27 36368088 (voice)&lt;br/&gt;
+rodrigo@ijsn.es.gov.br&lt;br/&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;em&gt;Hours_of_Service:&lt;/em&gt;  08:00-12:00; 13:30-17:30&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;Contact_Instructions:&lt;/em&gt;
+&lt;dd&gt;
+
+Na aus&amp;ecirc;ncia do M&amp;aacute;rio Sartori poder&amp;aacute; ser contactado no mesmo telefone os profissionais La&amp;eacute;rsio, Vailson Schneider ou Moura.
+
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr/&gt;
+&lt;h3&gt;&lt;a name="why"&gt;Why was the data set created?&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;
+&lt;hr/&gt;
+&lt;h3&gt;&lt;a name="how"&gt;How was the data set created?&lt;/a&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a name="how.1"&gt;&lt;b&gt;From what previous works were the data drawn?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="how.2"&gt;&lt;b&gt;How were the data generated, processed, and modified?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;dl&gt;
+&lt;dt&gt;Date: 15-Jul-2010 (process 1 of 5)
+&lt;dd&gt;
+<metadata>imported.</metadata>
+&lt;p&gt;
+Data sources used in this process:
+&lt;ul&gt;
+&lt;li&gt;C:\DOCUME~1\fghfhfh\CONFIG~1\Temp\xml9.tmp
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;dt&gt;Date: 15-Jul-2010 (process 2 of 5)
+&lt;dd&gt;
+<metadata>imported.</metadata>
+&lt;p&gt;
+Data sources used in this process:
+&lt;ul&gt;
+&lt;li&gt;C:\DOCUME~1\fghfhfh\CONFIG~1\Temp\xmlA.tmp
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;dt&gt;Date: 26-Jul-2010 (process 3 of 5)
+&lt;dd&gt;
+Dataset copied.
+&lt;p&gt;
+Data sources used in this process:
+&lt;ul&gt;
+&lt;li&gt;C:\Users\rodrigo\Desktop\Mapa ES\LIM_MUNICIPAL_ES_GB
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;dt&gt;Date: 30-Sep-2010 (process 4 of 5)
+&lt;dd&gt;
+Dataset copied.
+&lt;p&gt;
+Data sources used in this process:
+&lt;ul&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;dt&gt;Date: 07-Jan-2011 (process 5 of 5)
+&lt;dd&gt;
+Dataset copied.
+&lt;p&gt;
+Data sources used in this process:
+&lt;ul&gt;
+&lt;li&gt;Z:\Geoprocessamento\5-BD_CGeo\VETOR\1-ESP&amp;Iacute;RITO SANTO\GEOBASES\LIM_MUNICIPAL_ES_GB
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="how.3"&gt;&lt;b&gt;What similar or related data should the user be aware of?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+&lt;hr/&gt;
+&lt;h3&gt;&lt;a name="quality"&gt;How reliable are the data; what problems remain in the data set?&lt;/a&gt;&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a name="quality.1"&gt;&lt;b&gt;How well have the observations been checked?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="quality.2"&gt;&lt;b&gt;How accurate are the geographic locations?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="quality.3"&gt;&lt;b&gt;How accurate are the heights or depths?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="quality.4"&gt;&lt;b&gt;Where are the gaps in the data?  What is missing?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="quality.5"&gt;&lt;b&gt;How consistent are the relationships among the observations, including topology?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+A topologia foi 100% corrigida
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+&lt;hr/&gt;
+&lt;h3&gt;&lt;a name="getacopy"&gt;How can someone get a copy of the data set?&lt;/a&gt;&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;a name="getacopy.0"&gt;&lt;b&gt;Are there legal restrictions on access or use of the data?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;blockquote&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;em&gt;Access_Constraints:&lt;/em&gt;  N&amp;atilde;o tem restri&amp;ccedil;&amp;atilde;o para acesso deste layer.&lt;/dt&gt;
+&lt;dt&gt;&lt;em&gt;Use_Constraints:&lt;/em&gt;
+&lt;dd&gt;
+
+N&amp;atilde;o existe restri&amp;ccedil;&amp;atilde;o de uso, por&amp;eacute;m, preferencialmente dever&amp;aacute; ser usado com os outros shapes da mesma escala.
+
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a name="getacopy.1"&gt;&lt;b&gt;Who distributes the data set?&lt;/b&gt;&lt;/a&gt;[Distributor contact information not provided.]&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="getacopy.2"&gt;&lt;b&gt;What's the catalog number I need to order this data set?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;tt&gt;Downloadable Data&lt;/tt&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="getacopy.3"&gt;&lt;b&gt;What legal disclaimers am I supposed to read?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a name="getacopy.4"&gt;&lt;b&gt;How can I download or order the data?&lt;/b&gt;&lt;/a&gt;&lt;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;b&gt;Availability in digital form:&lt;/b&gt;&lt;p&gt;
+&lt;table border="0" cellpadding="2"&gt;
+&lt;tr&gt;&lt;th align="left" valign="top"&gt;Data&amp;nbsp;format:&lt;/th&gt;
+&lt;td&gt;
+
+Size: 1,886
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;
+&lt;li&gt;&lt;b&gt;Cost to order the data:&lt;/b&gt; &lt;/ul&gt;
+&lt;p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+&lt;hr/&gt;
+&lt;h3&gt;&lt;a name="metaref"&gt;Who wrote the metadata?&lt;/a&gt;&lt;/h3&gt;
+&lt;dl&gt;
+&lt;dt&gt;Dates:
+&lt;dd&gt;Last modified: 19-Mar-2012&lt;br/&gt;
+&lt;/dd&gt;
+&lt;dt&gt;Metadata author:
+&lt;dd&gt;
+&lt;div style="margin-left: 2em"&gt;
+REQUIRED: The organization responsible for the metadata information.&lt;br/&gt;
+c/o REQUIRED: The person responsible for the metadata information.&lt;br/&gt;
+REQUIRED: The city of the address., REQUIRED: The state or province of the address. REQUIRED: The ZIP or other postal code of the address.&lt;br/&gt;
+&lt;p&gt;
+REQUIRED: The telephone number by which individuals can speak to the organization or individual. (voice)&lt;br/&gt;
+&lt;/div&gt;
+&lt;/dd&gt;
+&lt;dt&gt;Metadata standard: &lt;dd&gt;FGDC Content Standards for Digital Geospatial Metadata (FGDC-STD-001-1998)&lt;dt&gt;Metadata extensions used:
+&lt;dd&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.esri.com/metadata/esriprof80.html"&gt;&amp;lt;http://www.esri.com/metadata/esriprof80.html&amp;gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;hr/&gt;
+&lt;span class="mp-generated"&gt;Generated by &lt;a href="http://geology.usgs.gov/tools/metadata/tools/doc/mp.html"&gt;&lt;tt&gt;mp&lt;/tt&gt;&lt;/a&gt; version 2.9.6 on Mon Mar 19 13:58:06 2012&lt;br/&gt;&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+<Esri><MetaID>{899401FD-D5BD-48DF-A877-389056FC18D9}</MetaID><CreaDate>20120319</CreaDate><CreaTime>13583000</CreaTime><SyncOnce>FALSE</SyncOnce><SyncDate>20120813</SyncDate><SyncTime>17235900</SyncTime><ModDate>20120813</ModDate><ModTime>17235900</ModTime><DataProperties><lineage><Process ToolSource="C:\Program Files (x86)\ArcGIS\ArcToolbox\Toolboxes\Data Management Tools.tbx\RepairGeometry" Date="20120619" Time="101258">RepairGeometry Lim_Macrorregiao KEEP_NULL Lim_Macrorregiao</Process><Process ToolSource="C:\Program Files (x86)\ArcGIS\Desktop10.0\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20120802" Time="125212">CalculateField Lim_Macrorregiao origem "Coordenação de Geoprocessamento - IJSN" VB #</Process><Process ToolSource="C:\Program Files (x86)\ArcGIS\Desktop10.0\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20120802" Time="125237">CalculateField Lim_Macrorregiao origem "Coordenação de Geoprocessamento - IJSN" VB #</Process><Process ToolSource="C:\Program Files (x86)\ArcGIS\Desktop10.0\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20120802" Time="125511">CalculateField Lim_Macrorregiao origem "Lei 9.768 de 28/12/2011" VB #</Process><Process ToolSource="C:\Program Files (x86)\ArcGIS\Desktop10.0\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20120910" Time="144947">CalculateField Lim_Macrorregiao fonte "CGEO/IJSN" VB #</Process></lineage></DataProperties></Esri><dataqual><lineage><procstep><procdesc Sync="TRUE">Metadata imported.</procdesc><srcused Sync="TRUE">C:\Users\rodrigo\AppData\Local\Temp\xml2D96.tmp</srcused><procdate Sync="TRUE">20120319</procdate><proctime Sync="TRUE">13583000</proctime></procstep></lineage><logic>A topologia foi 100% corrigida</logic></dataqual><idinfo><native Sync="TRUE">Microsoft Windows Vista Version 6.1 (Build 7601) Service Pack 1; ESRI ArcCatalog 9.3.1.4000</native><descript><langdata Sync="TRUE">pt</langdata><abstract>Este layer de limite regional foi criado pela Coordenação de Geoprocessamento do Instituto Jones dos Santos Neves, com o intuito de representar a macrorregionalização de planejamento elaborada pela Secretaria de Estado de Planejamento do ES, com a finalidade de gerir, administrar e planejar melhor o território capixaba, conforme a lei 9.768 de 2011.</abstract><purpose>REQUIRED: A summary of the intentions with which the data set was developed.</purpose><supplinf>Escala de 1:15.000</supplinf></descript><citation><citeinfo><origin>REQUIRED: The name of an organization or individual that developed the data set.</origin><pubdate>REQUIRED: The date when the data set is published or otherwise made available for release.</pubdate><title Sync="TRUE">Lim_Macrorregiao</title><ftname Sync="TRUE">Lim_Macrorregiao</ftname><geoform Sync="TRUE">vector digital data</geoform><onlink Sync="TRUE">\\ijsn625\ijsn\Geoprocessamento\1-Projetos_CGeo\1-Em Andamento\INDE\BD\Limites\Lim_Macrorregiao.shp</onlink></citeinfo></citation><timeperd><current>publication date</current><timeinfo><sngdate><caldate>unknown</caldate></sngdate></timeinfo></timeperd><status><progress>Completo</progress><update>Apenas se a lei de criação sofrer alterações.</update></status><spdom><bounding><westbc Sync="TRUE">-41.889440</westbc><eastbc Sync="TRUE">-39.662470</eastbc><northbc Sync="TRUE">-17.878043</northbc><southbc Sync="TRUE">-21.313495</southbc></bounding><lboundng><leftbc Sync="TRUE">200193.687700</leftbc><rightbc Sync="TRUE">429827.508900</rightbc><bottombc Sync="TRUE">7643005.804502</bottombc><topbc Sync="TRUE">8021033.614401</topbc></lboundng></spdom><keywords><theme><themekt>REQUIRED: Reference to a formally registered thesaurus or a similar authoritative source of theme keywords.</themekt><themekey>Municípios</themekey><themekey>Limite</themekey><themekey>Região</themekey><themekey>Espírito Santo</themekey></theme><place><placekey>Espírito Santo</placekey></place></keywords><accconst>Não tem restrição para acesso deste layer.</accconst><useconst>Não existe restrição de uso, porém, preferencialmente deverá ser usado com os outros shapes da mesma escala.</useconst><natvform Sync="TRUE">Shapefile</natvform><ptcontac><cntinfo><cntperp><cntper>Rodrigo Bergamaschi</cntper><cntorg>CGEO/IJSN</cntorg></cntperp><cntvoice>27 36368088</cntvoice><cntemail>rodrigo@ijsn.es.gov.br</cntemail></cntinfo></ptcontac><datacred>Secretaria de Estado e Planejamento e Instituto Jones dos Sanots Neves</datacred><secinfo><secsys>Não existe confidencialidade</secsys></secinfo></idinfo><dataIdInfo><envirDesc Sync="TRUE">Microsoft Windows Vista Version 6.1 (Build 7601) Service Pack 1; ESRI ArcCatalog 9.3.1.4000</envirDesc><dataLang><languageCode Sync="TRUE" value="pt"></languageCode></dataLang><idCitation><resTitle Sync="TRUE">Lim_Macrorregiao</resTitle><presForm><PresFormCd Sync="TRUE" value="005"></PresFormCd></presForm></idCitation><spatRpType><SpatRepTypCd Sync="TRUE" value="001"></SpatRepTypCd></spatRpType><dataExt><geoEle><GeoBndBox esriExtentType="native"><westBL Sync="TRUE">200193.6877</westBL><eastBL Sync="TRUE">429827.5089</eastBL><northBL Sync="TRUE">8021033.614401</northBL><southBL Sync="TRUE">7643005.804502</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle></dataExt><geoBox esriExtentType="decdegrees"><westBL Sync="TRUE">-41.88944</westBL><eastBL Sync="TRUE">-39.66247</eastBL><northBL Sync="TRUE">-17.878043</northBL><southBL Sync="TRUE">-21.313495</southBL><exTypeCode Sync="TRUE">1</exTypeCode></geoBox></dataIdInfo><metainfo><langmeta Sync="TRUE">pt</langmeta><metstdn Sync="TRUE">FGDC Content Standards for Digital Geospatial Metadata</metstdn><metstdv Sync="TRUE">FGDC-STD-001-1998</metstdv><mettc Sync="TRUE">local time</mettc><metc><cntinfo><cntorgp><cntper>REQUIRED: The person responsible for the metadata information.</cntper><cntorg>REQUIRED: The organization responsible for the metadata information.</cntorg></cntorgp><cntaddr><addrtype>REQUIRED: The mailing and/or physical address for the organization or individual.</addrtype><city>REQUIRED: The city of the address.</city><state>REQUIRED: The state or province of the address.</state><postal>REQUIRED: The ZIP or other postal code of the address.</postal></cntaddr><cntvoice>REQUIRED: The telephone number by which individuals can speak to the organization or individual.</cntvoice></cntinfo></metc><metd Sync="TRUE">20120813</metd><metextns><onlink Sync="TRUE">http://www.esri.com/metadata/esriprof80.html</onlink><metprof Sync="TRUE">ESRI Metadata Profile</metprof></metextns></metainfo><mdLang><languageCode Sync="TRUE" value="pt"></languageCode></mdLang><mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName><mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer><mdChar><CharSetCd Sync="TRUE" value="004"></CharSetCd></mdChar><mdHrLv><ScopeCd Sync="TRUE" value="005"></ScopeCd></mdHrLv><mdHrLvName Sync="TRUE">dataset</mdHrLvName><distinfo><resdesc Sync="TRUE">Downloadable Data</resdesc><stdorder><digform><digtinfo><transize Sync="TRUE">1,260</transize><dssize Sync="TRUE">1,260</dssize></digtinfo></digform></stdorder></distinfo><distInfo><distributor><distorTran><onLineSrc><orDesc Sync="TRUE">002</orDesc><linkage Sync="TRUE">file://\\ijsn625\ijsn\Geoprocessamento\1-Projetos_CGeo\1-Em Andamento\INDE\BD\Limites\Lim_Macrorregiao.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></onLineSrc><transSize Sync="TRUE">1,260</transSize></distorTran><distorFormat><formatName Sync="TRUE">Shapefile</formatName></distorFormat></distributor></distInfo><spdoinfo><direct Sync="TRUE">Vector</direct><ptvctinf><esriterm Name="Lim_Macrorregiao"><efeatyp Sync="TRUE">Simple</efeatyp><efeageom Sync="TRUE">Polygon</efeageom><esritopo Sync="TRUE">FALSE</esritopo><efeacnt Sync="TRUE">4</efeacnt><spindex Sync="TRUE">FALSE</spindex><linrefer Sync="TRUE">FALSE</linrefer></esriterm><sdtsterm Name="Lim_Macrorregiao"><sdtstype Sync="TRUE">G-polygon</sdtstype><ptvctcnt Sync="TRUE">4</ptvctcnt></sdtsterm></ptvctinf></spdoinfo><spref><horizsys><cordsysn><geogcsn Sync="TRUE">GCS_SIRGAS_2000</geogcsn><projcsn Sync="TRUE">SIRGAS_2000_UTM_Zone_24S</projcsn></cordsysn><planar><planci><plance Sync="TRUE">coordinate pair</plance><plandu Sync="TRUE">meters</plandu><coordrep><absres Sync="TRUE">0.000000</absres><ordres Sync="TRUE">0.000000</ordres></coordrep></planci><mapproj><mapprojn Sync="TRUE">Transverse Mercator</mapprojn><transmer><sfctrmer Sync="TRUE">0.999600</sfctrmer><longcm Sync="TRUE">-39.000000</longcm><latprjo Sync="TRUE">0.000000</latprjo><feast Sync="TRUE">500000.000000</feast><fnorth Sync="TRUE">10000000.000000</fnorth></transmer></mapproj></planar><geodetic><horizdn Sync="TRUE">D_SIRGAS_2000</horizdn><ellips Sync="TRUE">Geodetic Reference System 80</ellips><semiaxis Sync="TRUE">6378137.000000</semiaxis><denflat Sync="TRUE">298.257222</denflat></geodetic></horizsys></spref><refSysInfo><RefSystem><refSysID><identCode Sync="TRUE">SIRGAS_2000_UTM_Zone_24S</identCode></refSysID></RefSystem></refSysInfo><spatRepInfo><VectSpatRep><topLvl><TopoLevCd Sync="TRUE" value="001"></TopoLevCd></topLvl><geometObjs Name="Lim_Macrorregiao"><geoObjTyp><GeoObjTypCd Sync="TRUE" value="001"></GeoObjTypCd></geoObjTyp><geoObjCnt Sync="TRUE">4</geoObjCnt></geometObjs></VectSpatRep></spatRepInfo><eainfo><detailed Name="Lim_Macrorregiao"><enttyp><enttypl Sync="TRUE">Lim_Macrorregiao</enttypl><enttypt Sync="TRUE">Feature Class</enttypt><enttypc Sync="TRUE">4</enttypc></enttyp><attr><attrlabl Sync="TRUE">FID</attrlabl><attalias Sync="TRUE">FID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Internal feature number.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom></attrdomv></attr><attr><attrlabl Sync="TRUE">Shape</attrlabl><attalias Sync="TRUE">Shape</attalias><attrtype Sync="TRUE">Geometry</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Feature geometry.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Coordinates defining the features.</udom></attrdomv></attr><attr><attrlabl Sync="TRUE">nome</attrlabl><attalias Sync="TRUE">nome</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">50</attwidth></attr><attr><attrlabl Sync="TRUE">areaKm2</attrlabl><attalias Sync="TRUE">areaKm2</attalias><attrtype Sync="TRUE">Float</attrtype><attwidth Sync="TRUE">19</attwidth><atnumdec Sync="TRUE">11</atnumdec></attr><attr><attrlabl Sync="TRUE">fonte</attrlabl><attalias Sync="TRUE">fonte</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">50</attwidth></attr><attr><attrlabl Sync="TRUE">data</attrlabl><attalias Sync="TRUE">data</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">50</attwidth></attr><attr><attrlabl Sync="TRUE">origem</attrlabl><attalias Sync="TRUE">origem</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">50</attwidth></attr></detailed></eainfo><mdDateSt Sync="TRUE">20120813</mdDateSt></metadata>

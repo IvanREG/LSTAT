@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>relatorio.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="descritiva-dos-dados-de-desnutri%C3%A7%C3%A3o-divididos-em-macroregi%C3%B5es">Descritiva dos dados de desnutrição divididos em macroregiões</h1>
+<p>Aluno: João Paulo de Paiva Holz
+<br>
+Professor: Ivan Robert Enriquez Guzman
+<br>
+Materia: Laboratorio de estatistica</p>
+<hr>
+<p>Foi escolhido Desnutrição como grupo cid-10. A decisão de escolha desse grupo foi por conta de sua relevancia em metricas de saude globais.
+Seguindo o pedido no exercicio filtrei até 15 anos. Pegando todas faixas a abaixo.</p>
+<h2 id="distribui%C3%A7%C3%A3o-da-popula%C3%A7%C3%A3o">Distribuição da população</h2>
+<p>Abaixo vemos a distribuição da população no Espirito Santo. Com quase 60% na região metropolitana ou grande Vitória, 18 na região sul e 24% na região centro norte, mais próxima com a Bahia. Sabemos que mais de 50% da população vive em Vitória então vemos os dados mostrando corpo.</p>
+<h2 id="plotbr"><img src="pieplotpop.png" alt="plot">
+<br></h2>
+<h2 id="evolu%C3%A7%C3%A3o-da-popula%C3%A7%C3%A3o">Evolução da população</h2>
+<p>Abaixo vemos o crescimento populacional ao longo dos anos. Vemos que o total de 2020 vamos chegando em 4 milhões de habitantes no estado.</p>
+<p><img src="evolucao_pop.png" alt="plot"></p>
+<h3 id="taxa-de-crescimento-populacional">Taxa de Crescimento Populacional</h3>
+<p>Calculei de 2 maneiras o crescimento populacional. A primeira foi utilizando apenas a virada de 2016 para 2017, pois o exercicio sugeria a utilização de 2017 como base para previsão. O que parece mais coerente com os tempos modernos, mas vemos que as taxas não variam muito a baixo</p>
+<table>
+<thead>
+<tr>
+<th>Região</th>
+<th>Taxa de Crescimento Geo</th>
+<th>Taxa de Crescimento 2017</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3205 SUL</td>
+<td>1.01228</td>
+<td>1.00672</td>
+</tr>
+<tr>
+<td>3207 METROPOLITANA</td>
+<td>1.01878</td>
+<td>1.01216</td>
+</tr>
+<tr>
+<td>3209 CENTRAL NORTE</td>
+<td>1.01393</td>
+<td>1.01012</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>1.01642</td>
+<td>1.01074</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="crescimento-populacional-estimado">Crescimento Populacional Estimado</h3>
+<table>
+<thead>
+<tr>
+<th>ANO</th>
+<th>3205 SUL</th>
+<th>3207 METROPOLITANA</th>
+<th>3209 CENTRAL NORTE</th>
+<th>TOTAL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2018</td>
+<td>694 849.98</td>
+<td>2 391 340.37</td>
+<td>973 298.76</td>
+<td>4 059 472.95</td>
+</tr>
+<tr>
+<td>2019</td>
+<td>699 521.16</td>
+<td>2 420 428.31</td>
+<td>983 152.28</td>
+<td>4 103 052.79</td>
+</tr>
+<tr>
+<td>2020</td>
+<td>704 223.74</td>
+<td>2 449 870.07</td>
+<td>993 105.56</td>
+<td>4 147 100.47</td>
+</tr>
+<tr>
+<td>2021</td>
+<td>708 957.93</td>
+<td>2 479 669.95</td>
+<td>1 003 159.60</td>
+<td>4 191 621.02</td>
+</tr>
+</tbody>
+</table>
+<h3 id="real-para-compararmos">Real para compararmos</h3>
+<p>Vemos que é proximo porem a previsão joga os numeros um pouco pra cima</p>
+<table>
+<thead>
+<tr>
+<th>ANO</th>
+<th>3205 SUL</th>
+<th>3207 METROPOLITANA</th>
+<th>3209 CENTRAL NORTE</th>
+<th>TOTAL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2018</td>
+<td>673658</td>
+<td>2347633</td>
+<td>951097</td>
+<td>3972388</td>
+</tr>
+<tr>
+<td>2019</td>
+<td>678071</td>
+<td>2379133</td>
+<td>961446</td>
+<td>4018650</td>
+</tr>
+</tbody>
+</table>
+<h2 id="desnutri%C3%A7%C3%A3o-grupo-cid-10">Desnutrição Grupo CID-10</h2>
+<p>Vemos abaixo como os casos estão distribuidos nas macroregiões. Com 42% sendo na grande vitoria. O que nós faz perceber que mesmo tendo 60% da população ela apresenta 40% dos casos. Mostrando estar a frente na luta contra a desnutrição.<br>
+25% dos casos são da região sul, bem proximo dos 20% mas ainda sim acima. E o centro norte com 33%, tambem maior que 24% que é sua população.</p>
+<p><img src="pieplotdes.png" alt="plot"></p>
+<h2 id="evolu%C3%A7%C3%A3o-dos-%C3%B3bitos-por-desnutri%C3%A7%C3%A3o">Evolução dos Óbitos por desnutrição</h2>
+<p>Como o combate a desnutrição paulatinamente veio sendo palco de discussões e nas metricas de saúde vemos declinar rapidamente para 0, e esperamos que chegue a 0 nos próximos anos.</p>
+<p><img src="evolucao_des.png" alt="plot"></p>
+<h2 id="numero-previsto-de-obtos-pela-taxa-de-ocorr%C3%AAncia">Numero previsto de obtos pela taxa de ocorrência</h2>
+<table>
+<thead>
+<tr>
+<th>ANO</th>
+<th>3205 SUL</th>
+<th>3207 METROPOLITANA</th>
+<th>3209 CENTRAL NORTE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2018</td>
+<td>1.05390</td>
+<td>1.53399</td>
+<td>1.03789</td>
+</tr>
+<tr>
+<td>2019</td>
+<td>1.06099</td>
+<td>1.55265</td>
+<td>1.04840</td>
+</tr>
+<tr>
+<td>2020</td>
+<td>1.06812</td>
+<td>1.57154</td>
+<td>1.05901</td>
+</tr>
+<tr>
+<td>2021</td>
+<td>1.07530</td>
+<td>1.59065</td>
+<td>1.06973</td>
+</tr>
+</tbody>
+</table>
+<h2 id="real">Real</h2>
+<table>
+<thead>
+<tr>
+<th>3205 SUL</th>
+<th>3207 METROPOLITANA</th>
+<th>3209 CENTRAL NORTE</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2014</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2015</td>
+<td>1</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2016</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2017</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2018</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2019</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2020</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="conclus%C3%A3o">Conclusão</h2>
+<p>Conseguimos concluir que a desnutrição esta sendo bem combatida e reduzindo a cada dia. Utilizando as taxas conseguimos &quot;estimar&quot; que teriamos 10 mortes em 2018,2019 e 2020 juntos, e nó final chegamos ao mesmo resultado.
+Conseguimos ver que a região metropolitana conseguiu diminui com mais rapidez tal problema, vemos tambem que o crescimento populacional pode estar comprometido por migrações dos residentes para outros estados.</p>
+<br>
+<hr>
+
+</body>
+</html>

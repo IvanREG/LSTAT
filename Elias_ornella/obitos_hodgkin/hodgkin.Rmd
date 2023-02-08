@@ -1,0 +1,499 @@
+---
+title: "Mortalidade por linfoma de Hodgkin em crianças e adolescentes no Brasil"
+author: "Elias Ribeiro Rosa Junior e Ornella Scardua Ferreira"
+subtitle: Laboratório de Estatística - Ivan Robert Enriquez Guzman
+output:
+  pdf_document: default
+  html_document: default
+  extra_dependencies: ["float"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = 'center', out.width = "80%",
+                      warning = FALSE, message = FALSE, error = FALSE,fig.pos = "H")
+```
+
+```{r}
+# dados
+library(dplyr)
+library(tidyr)
+library(readODS)
+# graficos
+library(ggplot2)
+library(geobr)
+library(scales)
+library(summarytools)
+#tabela
+library(data.table)
+library(prais)
+library(magrittr)
+library(kableExtra)
+#serie
+library(fable)
+library(fabletools) 
+library(tsibble) 
+library(tsibbledata) 
+library(feasts) 
+```
+
+### Introdução
+
+Linfoma é um câncer do sangue que se origina no sistema linfático, o qual é composto por linfonodos (gânglios) e tecidos que produzem células responsáveis em defender o organismo humano de infeções e outros tumores. Existem dois tipos de linfoma, e a diferença entre eles se dá pelas características encontradas no tumor. Enquanto no linfoma de Hodgkin as células malignas são grandes e, portanto, fáceis de identificá-las nos linfonodos doentes (as células de Reed-Sternberg), no linfoma não-Hodgkin não há padrão celular.
+
+Em particular, o linfoma (ou doença) de Hodgkin surge quando um linfócito se transforma em uma célula maligna capaz de se multiplicar descontroladamente e de se disseminar de um linfonodo para outro por meio dos vasos linfáticos. Se não tratadas precocemente, os tumores podem se espalhar para tecidos próximos ou mesmo para outros órgãos do corpo. Além disso, uma pessoa acometida pela doença de Hodgkin, geralmente, apresenta ínguas superficiais e indolores no pescoço, axilas e virilha e pode manifestar febre, fadiga, sudorese noturna, perda de peso repentina e coceira na pele. Quando os linfonodos são atacados na região do tórax, os sintomas são dor torácica, tosse e falta de ar; na pelve e no abdômen, os sintomas são sensação de estômago cheio e distensão abdominal.
+
+Segundo o Instituto Nacional de Câncer (INCA), o linfoma de Hodgkin é mais incidente entre homens adolescentes e adultos (15 a 39 anos) e idosos (75 anos ou mais) do que entre mulheres com as mesmas faixas de idade, e os fatores de risco estão relacionados ao uso de drogas imunossupressoras, infecção pelo HIV, deficiência imunológica e, ainda que incomum, histórico familiar da doença. No entanto, em crianças e adolescentes de até 19 anos (STELIAROVA-FOUCHER, Eva et al., 2004), as causas ainda são desconhecidas e pouco exploradas, embora estudos já tenham apontado para a predisposição genética e exposição ambiental (STILLER, 2007). Por outra perspectiva, estudos também mostraram que as taxas de incidência de cânceres infantojuvenis estão aumentando no decorrer dos anos em todas as faixas etárias dessa população, sem contar que cerca de 80% dos casos ocorreram em países com baixo índice de desenvolvimento humano (IDH) e serviços de saúde precários (FERLAY, Jacques et al., 2015).
+
+Em razão disso, este estudo tem como objetivo analisar a mortalidade por linfoma de Hodgkin em crianças e adolescentes de até 19 anos no Brasil, por faixa etária e região, indicando os potenciais fatores de risco e verificando as tendências das mortes. Os dados a serem considerados são do Sistema de Informação sobre Mortalidade (SIM), disponibilizados no aplicativo TABNET, do DataSUS, pelo Ministério da Saúde, datados de 2000 a 2020.
+
+```{r}
+# dados de hodgkin
+
+dados_cancer <- readRDS("dados/dados_cancer.rds")
+
+# dados populacao
+
+dados_populacao <- readRDS("dados/dados_populacao.rds")
+```
+
+```{r}
+dados <- rbind(dados_cancer,dados_populacao)
+
+d <- dados %>% 
+  tidyr::pivot_longer(
+    cols = c('2000', '2001', '2002', '2003', '2004', '2005',
+             '2006', '2007', '2008', '2009', '2010', '2011',
+             '2012', '2013', '2014', '2015', '2016', '2017',
+             '2018', '2019', '2020'),
+    names_to = "ano",
+    values_to = "n"
+  )
+
+d$faixa_et <- factor(d$faixa_et,levels = c("menor_1ano","1-4","5-9","10-14","15-19"))
+```
+
+```{r}
+# valores absolutos e percentuais
+
+t2 <- d %>% 
+  group_by(ano,base) %>% 
+  summarise(n_total = sum(n)) 
+
+t3 <- t2 %>% filter(base=="hodgkin" | base=="neoplasias")
+
+t4 <- t2 %>% filter(base=="populacao") %>% rename(n_pop = n_total) %>% select(-base)
+
+dados2 <- full_join(t3,t4,by=c("ano")) %>% mutate(taxa=n_total/n_pop*100000)
+
+v1 <- dados2 %>% filter(base=="hodgkin") %>% select (n_total)
+v2 <- dados2 %>% filter(base=="neoplasias") %>% select (n_total)
+
+
+# casos de hodgkin
+h <- sum(v1$n_total)
+
+# casos de neoplasia
+n <- sum(v2$n_total)
+
+# Total de casos hodgkin divido por total de casos neoplasias
+p <- round(sum(v1$n_total)/sum(v2$n_total), 4)
+```
+
+### Análise estatística
+
+<br>
+
+A análise descritiva foi utilizada para caracterizar as variáveis, sendo os resultados apresentados em taxas de mortalidade por linfoma de Hodgkin em crianças e adolescentes de até 19 anos ao longo dos anos de 2000 a 2020, por faixa etária e região. Para o estudo de séries temporais das taxas de mortalidade, ajustamos o modelo de Prais-Winsten para analisar a tendência, no qual foram consideradas as variáveis significativas do ponto de vista estatístico (isto é, quando valor-p$<0,05$). O _software_ [R](https://www.r-project.org), versão 4.2.2, linguagem computacional usada neste projeto, sob a IDE [RStudio](https://rstudio.com), foi utilizado para a análise estatística aqui descrita.
+
+### Análise descritiva
+
+<br>
+
+Analisamos as bases de dados do Sistema de Informação sobre Mortalidade (SIM) datadas de 2000 a 2020, anos em que os dados estimados da população brasileira estavam disponíveis. A princípio, consideramos como variáveis **ano do óbito por linfoma de Hodgkin**, **macrorregião de saúde** e **faixa etária**.
+
+Dentre os 48.426 óbitos por qualquer tipo de neoplasia que ocorreram no público infanto-juvenil, 792 foram devido ao linfoma de Hodgkin, correspondendo a apenas 1,64% dos casos de cânceres. Além disso, as taxas de mortalidade não ultrapassaram 0,036 em todo o período observado nem apresentaram tendência de crescimento ou descrescimento ao longo dos anos, como pode ser visto na Figura 1. Resultados similares acontecem quando avaliamos as tendêncidas das taxas de mortalidade ao considerar as regiões brasileiras. Nos mapas apresentados na Figura 2, não verificamos em nenhuma das regiões comportamento de aumento ou diminuição das mortes pelo câncer de Hodking ao avançar dos anos.
+
+```{r fig.cap = "Taxa de mortalidade por Linfoma de Hodgkin em crianças e adolescentes no Brasil, por ano.", out.width = "70%"}
+t2 <- d %>% 
+  group_by(ano,base) %>% 
+  summarise(n_total = sum(n)) 
+
+t3 <- t2 %>% filter(base == "hodgkin")
+
+t4 <- t2 %>% filter(base == "populacao") %>% rename(n_pop = n_total) %>% select(-base)
+
+dados2 <- full_join(t3, t4, by = c("ano")) %>% mutate(taxa = n_total/n_pop*100000) 
+
+dados2 %>%  
+  ggplot(aes(ano, taxa)) +
+  geom_line(group = "taxa") +
+  scale_fill_viridis_c(option = "inferno", direction = -1) +
+  labs(title = "Linfoma de Hodgkin, por ano",
+       subtitle = "Taxa de mortalidade a cada 100.000 habitantes",
+       x = "", y = "taxa") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45)) 
+```
+
+<br>
+
+```{r fig.cap = "Taxa de mortalidade por Linfoma de Hodgkin em crianças e adolescentes no Brasil, por ano e região.",results = "hide"}
+region <- read_region(year = 2020)
+
+t5 <- d %>% 
+  mutate(name_region = case_when(
+    regiao == "norte" ~ "Norte",
+    regiao == "nordeste" ~ "Nordeste",
+    regiao == "sudeste" ~ "Sudeste",
+    regiao == "sul" ~ "Sul",
+    regiao == "centro-oeste" ~ "Centro Oeste",
+    TRUE ~ NA_character_
+  )) %>% 
+  group_by(ano,regiao,name_region,base) %>% 
+  summarise(n_total = sum(n)) %>% 
+  as.data.frame()
+
+t1 <- t5 %>% filter(base=="hodgkin" & name_region != "NA")
+
+t2 <- t5 %>% filter(base=="populacao" & name_region != "NA") %>% rename(n_pop = n_total) %>% select(-base)
+
+dados2 <- full_join(t1,t2,by=c("ano","regiao","name_region")) %>% mutate(taxa=n_total/n_pop*100000)
+
+dados_mapa <- left_join(region, dados2, by= "name_region")
+
+dados_mapa %>%
+  ggplot() +
+  geom_sf(aes(fill=taxa), color= "grey30", size=.15) +
+  theme_void()  + 
+  labs(title = "Linfoma de Hodgkin, por ano e região",
+       subtitle = "Taxa de mortalidade a cada 100.000 habitantes",
+       fill = "taxa") +
+  scale_fill_viridis_c(option="rocket",direction=-1) + 
+  facet_wrap(~ano)
+```
+
+<br> 
+
+Dois aspectos muito importantes ao estudar a incidência e mortalidade por linfoma de Hodgkin em crianças e adolescentes são faixa etária, posto que jovens adultos são mais propensos à doença, e região de residência, uma vez que parâmetros socieconômicos são consideradas associações causais para o desenvolvimento de um câncer. Ao observar os mapas geográficos na Tabela 1 e na Figura 3, constatamos que o linfoma foi mais letal nos indivíduos que atenderam à faixa de idade de 15 a 19 anos, conclusão na direção com o que o INCA diz a respeito dos grupos mais afetados pelo linfoma de Hodgkin. Por outro lado, um fato curioso que podemos notar nessa mesma figura são as regiões em que mais óbitos ocorreram: Norte e Sul. Sabendo que os estados do Sul configuram entre os estados com os maiores IDHs do país, é de estranhar que eles tenham uma das maiores taxas de mortalidade nessa ocasião. O que nos leva a pensar que expectativa de vida, nível de educação e renda nacional bruta per capita não influenciam positiva e negativamente para o desenvolvimento e complicações clínicas do linfoma de Hodgkin. Na Tabela 1, pode ser visto que a região com o maior número de mortes, a cada 100 mil habitantes, por faixa etária, nas faixas etária menor de 1 ano até 10 a 14 anos é a Norte e na faixa etária 15 a 19 anos é a Sul.
+
+```{r fig.cap = "Taxa de mortalidade por Linfoma de Hodgkin em crianças e adolescentes no Brasil, por faixa etária e região.", results = "hide"}
+t5 <- d %>% 
+  mutate(name_region = case_when(
+    regiao == "norte" ~ "Norte",
+    regiao == "nordeste" ~ "Nordeste",
+    regiao == "sudeste" ~ "Sudeste",
+    regiao == "sul" ~ "Sul",
+    regiao == "centro-oeste" ~ "Centro Oeste",
+    TRUE ~ NA_character_
+  )) %>% 
+  group_by(regiao,name_region,faixa_et,base) %>% 
+  summarise(n_total = sum(n)) %>% 
+  as.data.frame()
+
+t1 <- t5 %>% filter(base=="hodgkin" & name_region != "NA")
+
+t2 <- t5 %>% filter(base=="populacao" & name_region != "NA") %>% rename(n_pop = n_total) %>% select(-base)
+
+dados2 <- full_join(t1,t2,by=c("regiao","faixa_et","name_region")) %>% mutate(taxa=n_total/n_pop*100000)
+
+dados_mapa2 <- left_join(region, dados2, by= "name_region")
+
+dados_mapa2 %>%
+  ggplot() +
+  geom_sf(aes(fill=taxa), color= "grey30", size=.15) +
+  theme_void()  + 
+  labs(title = "Linfoma de Hodgkin, por faixa etária e região",
+       subtitle = "Taxa de mortalidade a cada 100.000 habitantes",
+       fill = "taxa") +
+  scale_fill_viridis_c(option="rocket",direction=-1) + 
+  facet_wrap(~faixa_et)
+```
+
+<br>
+
+```{r}
+dados2$taxa <- round(dados2$taxa, 4)
+
+dados2 %>%
+  select(regiao,faixa_et,n_total,taxa) %>%
+  gt::gt() %>% 
+  gt::tab_style(
+    style = gt::cell_fill(color = 'lightyellow'),
+    locations = gt::cells_body(rows = c(11, 12, 13, 14, 25))
+    ) %>% 
+  gt::tab_source_note(
+    source_note = gt::md("Tabela 1: Taxa de mortalidade, a cada 100 mil habitantes, por <br> Linfoma de Hodgkin em crianças e adolescentes no Brasil, por <br> faixa etária e região.")
+    )
+```
+
+<br> 
+
+Sabemos que o Produto Interno Bruto (PIB) per capita é um bom indicador para medir o nível de desenvolvimento econômico de um país ou região. É de notar na Figura 4 que, além dos valores do PIB per capita aumentarem nas cincos regiões com o passar dos anos, os indivíduos das regiões Centro-Oeste, Sudeste e Sul possuem, nessa ordem, as maiores rendas a nível nacional. Mais uma conclusão em consonância ao fator econômico não ter influência direta na ocorrência da doença aqui estudada.
+
+```{r,echo=FALSE, fig.cap = "PIB per capita, por ano e região.", results = "hide"}
+dados_pib <- read.csv("dados/PIB/municipio.csv")
+
+municipios <- read_municipality(year=2020)
+
+municipios <- data.frame(municipios) |> select (code_muni,name_region)
+
+dados_pib <- full_join(dados_pib,municipios,by=c("id_municipio" ="code_muni"))
+
+data_pib <- dados_pib |> 
+  group_by(name_region,ano) %>% 
+  summarise(pib_total = sum(pib)) %>% 
+  as.data.frame()
+
+#filtro 2002 a 2019
+
+dados_mapa6 <- dados_mapa |> filter(ano >= 2002 & ano <= 2019)
+
+dados_mapa6$ano <- as.numeric(dados_mapa6$ano)
+
+dados_mapa3 <- full_join(data_pib,dados_mapa6,by=c("name_region","ano"))
+
+dados_mapa3 <- dados_mapa3 |> mutate(taxa_pib=pib_total/n_pop)
+
+dados_mapa3 <- left_join(region, dados_mapa3, by= "name_region")
+
+dados_mapa3 %>%
+  ggplot() +
+  geom_sf(aes(fill=taxa_pib), color= "grey30", size=.15) +
+  theme_void()  + 
+  labs(title = "PIB per capita, por ano e região",
+       subtitle = "",
+       fill = "taxa") +
+  scale_fill_viridis_c(option="rocket",direction=-1) + 
+  facet_wrap(~ano)
+```
+
+<br>
+
+### Análise de tendência
+
+<br>
+
+Para verificar se existe tendência na taxa de mortalidade por linfoma de Hodgkin no público infantojuvenil, foi utilizado o modelo de análise linear generalizada de Prais-Winsten, em que foi considerada faixa etária como covariável e taxa de mortalidade como variável independente. De acordo com ANTUNES e CARDOSO (2015), o modelo de Prais-Winsten é recomendável quando se pretende corrigir a autocorrelação serial de uma séries temporal. 
+
+Ao ajustar o modelo de Prais-Winsten, identificamos tendências de morte significativas nas cinco regiões somente entre as idades de 10 a 14 anos e de 15 a 19 anos (além de uma única tendência da faixa de idade de 5 a 9 anos na região Nordeste), como pode ser constatado pelo valor-p que acompanha cada um dos coeficientes estimados. Nesses casos, todos os resultados apontaram para **tendências lineares de crescimento**, posto que as estimativas são positivas. Essas informações podem ser melhor vistas nos mapas de tendências apresentados na Figura 5, nos quais a cor cinza indica tendência não significativa (isto é, quando o coeficiente resultou em valor-p$>$0,05).
+
+```{r fig.cap="Mapas de tendências de mortalidade, por faixa etária e região.", echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+t5 <- d %>% 
+  group_by(regiao,faixa_et,ano,base) %>% 
+  summarise(n_total = sum(n)) %>% 
+  as.data.frame()
+
+t1 <- t5 %>% filter(base=="hodgkin" & regiao != "NA")
+
+t2 <- t5 %>% filter(base=="populacao" & regiao != "NA") %>% rename(n_pop = n_total) %>% select(-base)
+
+dados2 <- full_join(t1,t2,by=c("faixa_et","regiao","ano")) %>% mutate(taxa=n_total/n_pop*100000)
+
+dados_hodg <- dados2 |> 
+  janitor::clean_names() %>% 
+  mutate(t = c(1:525))
+
+# prais winsten
+
+dados_hodg <- as.data.table(dados_hodg)
+
+regiao <- c("norte", "nordeste", "sudeste", "sul", "centro_oeste")
+dados <- data.table()
+dados_final <- data.table()
+
+pw_norte <- prais_winsten(taxa ~ faixa_et,data=dados_hodg |> filter(regiao=="norte"), index = "t")
+
+#summary(pw_norte)
+
+pw_nordeste <- prais_winsten(taxa ~ faixa_et,data=dados_hodg |> filter(regiao=="nordeste"), index = "t")
+
+#summary(pw_nordeste)
+
+pw_sul <- prais_winsten(taxa ~ faixa_et,data=dados_hodg |> filter(regiao=="sul"), index = "t")
+
+#summary(pw_sul)
+
+pw_sudeste <- prais_winsten(taxa ~ faixa_et,data=dados_hodg |> filter(regiao=="sudeste"), index = "t")
+
+#summary(pw_sudeste)
+
+pw_centro_oeste <- prais_winsten(taxa ~ faixa_et,data=dados_hodg |> filter(regiao=="centro-oeste"), index = "t")
+
+#summary(pw_sudeste)
+```
+
+```{r}
+data <- data.frame(faixa_et=rep(c("menor_1ano", "1-4", "5-9","10-14", "15-19"),5),regiao=c(rep("norte",5),rep("nordeste",5),rep("sul",5),rep("sudeste",5),rep("centro-oeste",5)),coef=c(pw_norte$coefficients,pw_nordeste$coefficients,pw_sul$coefficients,pw_sudeste$coefficients,pw_centro_oeste$coefficients),valor_p=c(coef(summary(pw_norte))[,4],coef(summary(pw_nordeste))[,4],coef(summary(pw_sul))[,4],coef(summary(pw_sudeste))[,4],coef(summary(pw_centro_oeste))[,4]))
+
+data |> 
+  kable(caption = "Tabela de tendências das taxas de mortalidade por linfoma de Hodgkin, por faixa etária e região.",
+        digits = 4) %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+
+data$faixa_et <- factor(
+  data$faixa_et,
+  levels = c("menor_1ano", "1-4", "5-9","10-14", "15-19")
+)
+
+t5 <- data %>% 
+  mutate(name_region = case_when(
+    regiao == "norte" ~ "Norte",
+    regiao == "nordeste" ~ "Nordeste",
+    regiao == "sudeste" ~ "Sudeste",
+    regiao == "sul" ~ "Sul",
+    regiao == "centro-oeste" ~ "Centro Oeste",
+    TRUE ~ NA_character_
+  )) %>% 
+  mutate(coef_na = ifelse(valor_p <= 0.05,coef,NA)) 
+
+dados_mapa5 <- left_join(region, t5, by= "name_region")
+
+dados_mapa5 %>%
+  ggplot() +
+  geom_sf(aes(fill=coef_na), color= "grey30", size=.15) +
+  theme_void()  + 
+  labs(title = "Tendência de linfoma de Hodgkin, por faixa etária e região",
+       fill = "estimativa") +
+  scale_fill_viridis_c(option="rocket",direction=-1) + 
+  facet_wrap(~faixa_et)
+```
+
+<br>
+
+### Análise temporal
+
+<br>
+
+Para a análise de de séries temporais das taxas de mortalidade por linfoma de Hodgkin em crianças e adolescentes de até 19 anos, a princípio, criamos um gráfico de linhas para analisar o comportamento da série e, portanto, identificar possíveis padrões e modelos apropriados. Nesta parte do estudo, vamos nos limitar somente aos resultados da região Norte, considerada até aqui a região com as maiores taxas de mortalidade pela doença - os demais resultados podem ser checados no aplicativo web Shiny [https://eliasrribeiro.shinyapps.io/obito_hodgkin/](https://eliasrribeiro.shinyapps.io/obito_hodgkin/).
+
+Vamos desconsiderar as faixas etárias menor que 1 ano e de 1 a 4 anos por essas apresentarem muitas taxas iguais a zero, o que torna a tarefa de analisar a temporalidade de mortalidade inviável nesses casos.
+
+```{r fig.cap="Séries da taxa de mortalidade por linfoma de Hodgkin na região Norte em crianças e adolescentes, por faixa etária."}
+faixa_et <- c("5-9","10-14", "15-19")
+
+for (j in faixa_et) {
+  print(
+    dados2 %>%
+      filter(regiao == "norte") |>
+      filter(faixa_et == j) |>
+      mutate(ano = as.numeric(ano)) |>
+      select(ano, taxa) |>
+      tsibble::as_tsibble(index = ano) |>
+      fabletools::autoplot(taxa) +
+      ggplot2::labs(
+        title = "Taxa de mortalidade por linfoma de Hodgkin na região Norte",
+        subtitle = paste0("por faixa etária [", j, "]"),
+        y = "taxa por 100.000 nascidos vivos",
+        x = NULL
+      ) +
+      theme_bw()
+  )
+}
+```
+
+<br>
+
+A partir dos gráficos da Figura 6, podemos notar que as séries da taxa de mortalidade pelo linfoma estudado sugerem comportamento cíclico na faixa etária de 5 a 9 anos, uma vez vistas oscilações de subida e descida de forma repetida, e tendências razoavelmente constantes após o ano de 2005 nas faixas etárias de 10 a 14 anos e de 15 a 19 anos.
+
+Sabemos que uma autocorrelação de uma série significa a correlação entre a série em um certo período e essa mesma série avaliada em um período de tempo anterior (defasagem ou _lag_, em inglês). Uma das formas de avaliar essa autocorrelação é por meio dos gráficos da função de autocorrelação (ACF) e da função de autocorrelação parcial (PACF) (MORETTIN e TOLOI, 2018). Com eles, é possível ter uma boa ideia acerca da aleatoriedade, tendência e sazonalidade dos dados, por exemplo.
+
+Como podemos ver na Figura 7, todos os valores ACF e PACF estão dentro dos limites tracejados em azul. Isso significa que a autocorrelação, para toda defasagem, é significativamente igual a zero. Em outras palavras, isso significa que se tratam de séries estacionárias.
+
+```{r fig.cap="Correlogramas ACF e PACF da série da taxa de mortalidade por linfoma de Hodking em crianças e adolescentes na região Norte, por faixa etária."}
+for (j in faixa_et) {
+  print(
+    dados2 %>%
+      filter(regiao == "norte") |>
+      filter(faixa_et == j) |>
+      mutate(ano = as.numeric(ano)) |>
+      select(ano, taxa) |>
+      tsibble::as_tsibble(index = ano) |>
+      feasts::gg_tsdisplay(taxa, plot_type = "partial")
+  )
+}
+```
+
+<br>
+
+<!-- Além disso, dos correlogramas ACF e PACF, conseguimos identificar modelos candidatos apropriados para fazerem previsões. Para resumir os resultados, agora vamos considerar somente a região Norte e a faixa etária de 15 a 19 anos, que historicamente abrange o grupo de indivíduos mais acometido pelo linfoma de Hodgkin. -->
+
+<!-- Ajustamos modelos ARIMA cujos parâmetros $d$ são iguais a zero, ou seja, não consideramos nenhum grau de integralização nos dados - na prática, a variável resposta taxa de mortalidade está sendo modelada por modelos ARMA. -->
+
+<!-- Nesse cenário, foram ajustados os modelos ARIMA(1,0,2), ARIMA(1,0,0), ARIMA(0,0,2) e ARIMA(0,0,0) (resultante de um algortimo automatizado denominado auto ARIMA), dentre os quais foi considerado como melhor aquele em que o Critério de Informação de Akaike (AIC) foi o menor. Como resultado da saída abaixo, faremos a predição utilizando o modelo ARIMA(0,0,0), que quer dizer um processo com nenhum coeficiente autorregressivo e nem médias móveis. -->
+
+<!-- ```{r} -->
+<!-- library(urca) -->
+
+<!-- d2 <- dados2 %>% -->
+<!--       filter(regiao == "norte") |> -->
+<!--       filter(faixa_et == "15-19") |> -->
+<!--       mutate(ano = as.numeric(ano)) |> -->
+<!--       select(ano, taxa) |> -->
+<!--       tsibble::as_tsibble(index = ano) -->
+
+<!-- fit <- d2 |>  -->
+<!--       fabletools::model( -->
+<!--       arima102 = fable::ARIMA(taxa ~ pdq(1, 0, 2)), -->
+<!--       arima100 = fable::ARIMA(taxa ~ pdq(1, 0, 0)), -->
+<!--       arima002 = fable::ARIMA(taxa ~ pdq(0, 0, 2)), -->
+<!--       auto_arima = fable::ARIMA(taxa) -->
+<!--   ) -->
+
+<!-- fabletools::glance(fit) %>% dplyr::arrange(AICc) -->
+<!-- ``` -->
+
+<!-- Antes de chegar às previsões, faz-se necessário investigar o comportamentos dos resíduos gerados pelo modelo. Assim, é de notar na Figura 8 que os resíduos têm autocorrelação igual a zero, indicando que a série é ruído branco. -->
+
+<!-- ```{r fig.cap="Gráficos dos resíduos do modelo ARIMA(0,0,0)."} -->
+<!-- fit %>% -->
+<!--   dplyr::select(auto_arima) %>% -->
+<!--   feasts::gg_tsresiduals() -->
+<!-- ``` -->
+
+<!-- <br> -->
+
+<!-- No entanto, para verificar se esse processo realmente se trata de um ruído branco, vamos utilizar o Teste de Ljung-Box, que testa se as correlações de uma série temporal são iguais ($H_0$) ou diferentes de zero ($H_a$) (MORETTIN e TOLOI, 2018). Sob $\alpha=0,05$, não há evidências para rejeitar a hipótese de independência dos dados (e, portanto, acreditar que eles estão distribuídos aleatoriamente). Logo, temos uma série de ruídos brancos não gaussianos (o que inviabiliza a utilização de intervalos de confiança, por exemplo). -->
+
+<!-- ```{r} -->
+<!-- fabletools::augment(fit) %>% -->
+<!-- dplyr::filter(.model == "auto_arima") %>% -->
+<!-- fabletools::features(.innov, feasts::ljung_box, lag = 10, dof = 3) -->
+<!-- ``` -->
+<!-- <br> -->
+
+<!-- Uma vez especificado o modelo e conferido seus resíduos, podemos fazer as previsões, as quais serão feitas para até o ano de 2025. É importante reforçar que as previsões a seguir estão relacionadas aos casos de linfoma entre adolescentes de 15 a 19 anos da região Norte. -->
+
+<!-- No entanto, vejam que o modelo ARIMA(0,0,0) não parece captar a dinâmica da série em questão, pois a primeira previsão já "cai" diretamente para a média (o que explica a constância da previsão).  -->
+
+<!-- ```{r fig.cap="Gráfico de previsão para a taxa de mortalidade por linfoma de Hodgkin em adolescentes de 15 a 19 anos, na região Norte, para os próximos 5 anos."} -->
+<!-- fit %>% -->
+<!--   dplyr::select(auto_arima) %>% -->
+<!--   fabletools::forecast(h = 5, bootstrap = TRUE) %>% -->
+<!--   fabletools::autoplot(d2) + -->
+<!--   ggplot2::labs( -->
+<!--         title = paste0("Previsão para a taxa de mortalidade por linfoma de Hodgkin para até 2025"), -->
+<!--         y = "taxa por 100.000 nascidos vivos", -->
+<!--         x = NULL -->
+<!--       ) + -->
+<!--   theme_bw() -->
+<!-- ``` -->
+
+<!-- <br> -->
+
+### Considerações Finais
+
+Identificamos tendências de crescimento significativas nas taxas de mortalidade por linfoma de Hodgkin nas cinco regiões somente entre as idades de 10 a 14 anos e de 15 a 19 anos (além de uma única tendência da faixa de idade de 5 a 9 anos na região Nordeste). 
+<!-- Por outro lado, o modelo ARIMA(0,0,0) proposto para fazer as previsões da mortalidade entre jovens de 15 a 19 anos na região Norte, idades e região de maior incidência da doença, para até 2025 não foi o mais adequado. -->
+Para resultados interativos da análise descritiva, de tendências e previsões deste estudo, acesse: [https://eliasrribeiro.shinyapps.io/obito_hodgkin/](https://eliasrribeiro.shinyapps.io/obito_hodgkin/).
+
+### Referências bibliográficas
+
+- ANTUNES, José Leopoldo Ferreira; CARDOSO, Maria Regina Alves. _Uso da análise de séries temporais em estudos epidemiológicos_. Epidemiologia e Serviços de Saúde, v. 24, p. 565-576, 2015.
+
+- FERLAY, Jacques et al. _Cancer incidence and mortality worldwide: sources, methods and major patterns in GLOBOCAN 2012_. International journal of cancer, v. 136, n. 5, p. E359-E386, 2015.
+
+- MORETTIN, Pedro A.; TOLOI, Clélia MC. _Análise de séries temporais: modelos lineares univariados_. Editora Blucher, 2018.
+
+- STELIAROVA-FOUCHER, Eva et al. _Geographical patterns and time trends of cancer incidence and survival among children and adolescents in Europe since the 1970s (the ACCIS project): an epidemiological study_. The Lancet, v. 364, n. 9451, p. 2097-2105, 2004.
+
+- STILLER, Charles A. _International patterns of cancer incidence in adolescents_. Cancer treatment reviews, v. 33, n. 7, p. 631-645, 2007.

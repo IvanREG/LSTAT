@@ -1,0 +1,362 @@
+---
+title: "Análise climática da cidade de Alagoas, em Sergipe"
+subtitle: "Laboratório de Estatística - Ivan Robert Enriquez Guzman"
+author: "Elias Ribeiro Rosa Junior e Ornella Scardua Ferreira"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = 'center', out.width = "80%",
+                      warning = FALSE, message = FALSE, error = FALSE)
+```
+
+```{r library}
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+library(lubridate)
+library(ggstatsplot)
+library(patchwork)
+library(modelsummary)
+library(ggthemes)
+library("tseries")
+library("itsmr")
+library("tsibble")
+library("forecast")
+library("TSA")
+library("vars")
+library("MTS")
+library("zoo")
+library("tsoutliers")
+library("lmtest")
+library("urca")
+```
+
+Neste trabalho, uma análise de Séries Temporais será feita para avaliar a temperatura do estado de Sergipe com base em covariáveis tais quais: precipitação, radiação, umidade, pressão atmosfésrica e velocidade do vento. A base de dados em análise contém 159.672 observações metereológicas coletadas da estação de Alagoas, em Sergipe, no período de 2000 a 2021, que foram posteriormente agrupadas em médias mensais devido à presença de muitos dados faltantes.
+
+### Análise descritiva
+
+Inicialmente, construímos uma tabela em que podem ser vistas as principais medidas-resumo e os histogramas das covariáveis, além de gráficos de _boxplot_ que reforçam visualmente as informações contidas nessa tabela. A princípio, por meio das medidas e dos _boxplots_, podemos observar que as covariáveis precipitação e radiação estão concentradas em um único intervalo de valores e que os dados associados às covariáveis umidade, pressão atmosférica, velocidade do vento e temperatura parecem estar dispersos em relação à média de maneira razoável. Já os histogramas sugerem distribuições assimétricas em todas covariáveis, embora pressão atmosférica e temperatura apontem para uma leve simetria em suas distribuições.
+
+```{r}
+# dados
+
+sergipe <- readRDS("dados_se.rds")
+
+# agrupando dados por mês
+
+dt1 <- sergipe |>
+  group_by(month = lubridate::floor_date(data, "month")) |>
+  filter(!is.na(temp)) |>
+  group_by(month) |>
+  summarise(temperatura = mean(temp),
+            precip = mean(prcp),
+            umid = mean(umidade),
+            vento_velo = mean(vento_velo),
+            press_atm = mean(press_atm))
+
+# selecionando somente as variáveis de interesse
+
+var <- dt1 %>% 
+  dplyr::select(precip, umid, press_atm, vento_velo, temperatura)
+
+# tabela com medidas resumo das variáveis
+
+datasummary_skim(
+  data = var,
+  title = "Tabela 1: Medidas resumo das covariáveis."
+)
+```
+
+```{r echo=FALSE, fig.cap='Boxplots das variáveis.'}
+g1 <- ggplot(data = dt1, aes(y = temperatura)) + 
+  geom_boxplot(width = .2, outlier.colour = "red", outlier.alpha = 0.5) +
+  scale_x_discrete() + 
+  labs(x = "temperatura", y = "") + 
+  theme_bw()
+
+g3 <- ggplot(data = dt1, aes(y = precip)) + 
+  geom_boxplot(width = .2, outlier.colour = "red", outlier.alpha = 0.5) +
+  scale_x_discrete() + 
+  labs(x = "precipitação", y = "") + 
+  theme_bw()
+
+g5 <- ggplot(data = dt1, aes(y = umid)) + 
+  geom_boxplot(width = .2, outlier.colour = "red", outlier.alpha = 0.5) +
+  scale_x_discrete() + 
+  labs(x = "umidade do ar", y = "") + 
+  theme_bw()
+
+g6 <- ggplot(data = dt1, aes(y = press_atm)) + 
+  geom_boxplot(width = .2, outlier.colour = "red", outlier.alpha = 0.5) +
+  scale_x_discrete() + 
+  labs(x = "pressão atmosférica", y ="") + 
+  theme_bw()
+
+g7 <- ggplot(data = dt1, aes(y = vento_velo)) + 
+  geom_boxplot(width = .2, outlier.colour = "red", outlier.alpha = 0.5) +
+  scale_x_discrete() + 
+  labs(x = "velocidade do vento", y = "") + 
+  theme_bw()
+
+(g1 | g3 | g5) / (g6 | g7)
+```
+
+### Análise temporal
+
+Em primeiro lugar, construímos gráficos de linhas para cada uma das variáveis a fim de avaliar o comportamento de cada uma dessas variáveis ao longo do tempo observado, isto é, no período de 2000 a 2020.
+
+Como podemos observar na Figura 2, com a exceção da temperatura e pressão atmosférica, existem muitos dados faltantes (especialmente na variável de umidade). O que é um grande problema em análise de séries temporais, pois dificulta o processamento dos dados e pode causar riscos para a identificação de tendências e observação de padrões, por exemplo. Porém, em vez de remover essas informações faltantes da análise, optamos por fazer inputação por meio da interpolação linear, cuja estimação dos valores acontece dentro de um intervalo conhecido, a partir dos pontos extremos deste intervalo.
+
+Vale mencionar que testamos os métodos de inputação via interpolação por splines, por médias móveis e suavição de Kalman, mas o que melhor se adaptou às dinâmicas das séries foi o método por interpolação linear.
+
+```{r fig.cap='Séries das variáveis de temperatura, velocidade do vento, precipitação, pressão atmosférica e umidade.'}
+# remove a variável de data
+
+dt1 <- dt1[, -1] 
+
+# gráficos das séries
+
+plot.ts(dt1)
+```
+
+O resultado da inputação pode ser visto na Figura 3 a seguir.
+
+```{r fig.cap='Séries das variáveis de precipitação, umidade e velocidade do vento com inputação de dados.'}
+# inputando dados nas variáveis com dados faltantes
+
+dt1[, "precip"] <- forecast::na.interp(dt1[, "precip"])
+dt1[, "umid"] <- forecast::na.interp(dt1[, "umid"])
+dt1[, "vento_velo"] <- forecast::na.interp(dt1[, "vento_velo"])
+
+# gráficos das séries
+
+plot.ts(dt1)
+```
+
+Ao lidar com análise temporal multivariada, usamos o Teste de Causalidade de Granger para verificar se as séries correpondentes às covariáveis (velocidade do vento, precipitação, pressão atmosférica  e umidade) ajudam a prever a série relacionada à temperatura. Se sim, então os valores passados das covariáveis adicionará informações significativas para prever os valores presentes da temperatura. Nesse teste, rejeitar a hipótese nula a um determinado nível de significância significa que a covariável $X$ foi importante para a previsão da variável resposta $Y$. Vale ressaltar que verificamos a causalidade Granger para até três _lags_.
+
+```{r}
+# granger para precipitação
+
+lmtest::grangertest(temperatura ~ precip, order = 3, data = dt1)
+
+# granger para umidade
+
+lmtest::grangertest(temperatura ~ umid, order = 3, data = dt1)
+
+# granger para velocidade do vento
+
+lmtest::grangertest(temperatura ~ vento_velo, order = 3, data = dt1)
+
+# granger para pressão atmosférica
+
+lmtest::grangertest(temperatura ~ press_atm, order = 3, data = dt1)
+```
+
+Assim, após a aplicação do teste em cada uma das covariáveis consideradas, constatamos que, ao nível de significância de 5%, há evidências "granger" de que precipitação e velocidade do vento causam a temperatura, ou seja, que saber os valores dessas covariáveis é importante para prever os valores futuros da temperatura. Por outro lado, sob o mesmo nível de significância, não há evidências "granger" de que umidade e pressão atmosférica possuem informações relevantes para a previsão da temperatura. 
+
+Por essa razão, as análises subsequentes será composta apenas pelas covariáveis **precipitação** e **velocidade do vento**, pois foram as únicas atestadas pelo Teste de Granger. 
+
+```{r fig.cap='Séries das variáveis temperatura, precipitação e velocidade do vento.'}
+# dados só com variáveis significativas
+
+dt2 <- dt1[, c("temperatura", "precip", "vento_velo")]
+
+# gráficos das séries
+
+plot.ts(dt2)
+```
+
+Podemos perceber na Figura 4 que as séries selecionadas indicam dinâmicas bem comportadas. No entanto, a série de precipitação aparenta sofrer com possíveis _outliers_ do tipo aditivo (pulos rápidos), e por isso vamos tratá-los por meio de uma análise de intervenção de _outliers aditivos_ (AO, sigla em inglês para _Addictive Outliers_).
+
+Na Figura 5, apresentamos o gráfico que identifica os _outliers_ aditivos. 
+
+```{r fig.cap='Gráfico de detecção de outliers aditivos na série de precipitação.'}
+# detectando outiliers aditivos
+
+outliers_excess_ts <- tso(ts(dt2["precip"]), types = "AO")
+
+# gráfico de detecção
+
+plot(outliers_excess_ts)
+```
+
+E na saída adiante, temos as posições exatas dos pontos AO, a saber, 12; 30; 53; 75; 136; e 186.
+
+```{r}
+# informações gerais dos pontos encontrados
+
+outliers_excess_ts$outliers 
+
+# posição dos outliers na série
+
+outliers_idx <- outliers_excess_ts$outliers$ind 
+
+# colunas de interesse
+
+(col_int <- outliers("AO", outliers_idx))
+```
+
+O gráfico exposto na Figura 6 denota os efeitos dos _outliers_ aditivos detectados na série de precipitação estimados após a intervenção. Na Figura 7, temos, então, a série original, corrigida e dos efeitos dos pontos AO da covariável de precipitação.
+
+```{r fig.cap='Gráfico dos efeitos dos pontos AO identificados na série de precipitação.'}
+# esqueleto da série identificando a posição do outlier
+
+esq_posi <- outliers.effects(col_int, 207) #207 = número de pontos na series. 
+efeito_outlier_precip <- as.matrix(
+  rowSums(esq_posi[, c("AO12", "AO30", "AO53", "AO75", "AO136", "AO186")])
+)
+
+# gráfico dos efeitos do ao
+
+plot(efeito_outlier_precip, type = 'l')
+```
+
+```{r fig.cap='Séries original, corrigida e dos efeitos dos AO de precipitação.'}
+# coeficientes dos efeitos dos outliers
+
+omega_hat <- as.numeric(unlist(outliers_excess_ts$outliers["coefhat"]))
+
+# calculando vetor que representa o efeito do outlier
+
+ao_effect <- efeito_outlier_precip
+ao_effect[ao_effect == 1] <- omega_hat
+ao_effect_ts <- ts(ao_effect)
+
+# substraindo o efeito da intervenção
+
+precipCORRIGIDA <- ts(dt1["precip"]) - ao_effect_ts
+
+# gráficos da série original, corrigida e efeitos dos AO
+
+plot(cbind("precipORIGINAL" = ts(dt2["precip"]),
+           "precipCORRIGIDA" = precipCORRIGIDA, 
+           "efeitoOUTLIERS" = ao_effect_ts),
+     main = "Serie original, corrigida e efeitos dos outliers")
+```
+
+E portanto, na Figura 8, podemos observar as séries das variáveis de temperatura, velocidade do vento e precipitação (reforçando, corrigida) que vamos utilizar para a etapa futura de predição. Mas antes disso, precisamos verificar se as séries agora consideradas são estacionárias.
+
+```{r}
+# dados com variável de precipitação corrigida
+
+dt3 <- dt2
+dt3["precip"] <- NULL
+dt3$precipCORRIGIDA <- precipCORRIGIDA
+
+# gráficos das séries consideradas
+
+plot.ts(dt3)
+```
+
+Para isso, faremos uso do Teste de Dickey-Fuller, comumente usado em Séries Temporais para detectar a presença de tendências estocásticas significativas. É importante dizer que, nesse teste, a hipótese nula afirma que a série não é estacionária. Em nossa aplicação, adotando o nível de significância de 5%, todas as séries apontaram para a estacionariedade, já que a hipótese nula foi rejeitada em todos os casos. Dessa forma, temos que a média, a variância e a autocorrelação de cada uma dessas variáveis são constantes ao longo do tempo.
+
+```{r}
+# fuller para temperatura
+
+tseries::adf.test(ts(dt3[, "temperatura"]))
+
+# fuller para velocidade do vento
+
+tseries::adf.test(ts(dt3[, "vento_velo"]))
+
+# fuller para precipitação
+
+tseries::adf.test(ts(dt3[, "precipCORRIGIDA"]))
+```
+
+#### Ajuste do modelo VARMA
+
+<br>
+
+Como estamos em um cenário temporal multivariado, consideramos um modelo VARMA (modelo temporal auto-regressivo multivariado com médias móveis). Identificamos as ordens $p$ (ordem do modelo auto-regressivo) e $q$ (ordem da média móvel) por meio da correlação cruzada estendida, que calcula a matriz de correlação cruzada estendida com os valores-p da estatísticas de Ljung-Box (teste para ruído branco). Vale frisar que, ao aplicar esse teste, esperamos não rejeitar a hipótese nula, pois a hipótese alternativa afirma que os resíduos não são independentes nem possuem distribuição Normal.
+
+Na saída vista abaixo, temos os valores-p do componente auto-regressivo nas linhas e da componente da média móvel nas colunas. Ao nível de significância de 5%, podemos perceber que o modelo $VARMA(3,0)$ parece ser uma escolha razoável. É importante dizer que, gealmente, modelos parcimoniosos são mais adequados (ou seja, valores de $p$ e $q$ precisam ser pequenos).
+
+```{r}
+# série multivariada
+
+serie <- ts(dt3)
+
+# correlação cruzada extendida para identificar ordens p e q
+
+Eccm(serie)
+```
+
+O resultado do ajuste do modelo $VARMA(3,0)$ é apresentado a seguir.
+
+```{r}
+# ajuste
+
+modelo <- VARMA(serie, p = 3, q = 0)
+```
+
+Reparem na saída acima que os valores de AIC E BIC são -8,1091 e -7,6261, respectivamente, e foram 30 parâmetros estimados. Por isso, vamos "refinar" o modelo de modo que permaneçam somente os coeficientes significativos estatisticamente. Esse modelo é chamado de "modelo simplificado". 
+```{r}
+# ajuste refinado
+
+modelo_r1 <- refVARMA(modelo, thres = 0.8) # thres = 0.8 indica o limiar de refinamento
+```
+
+O resultado do ajuste refinado gerou $AIC=-8.2072$ e $BIC=-7.9174$ (um pouco menos em comparação ao ajuste anterior), enquanto o número de parâmetros estimados foi igual a 18. Podemos repetir o passo de refinamento mais uma vez, já que ainda existem alguns coeficientes não significativos. Vejamos o resultado.
+
+```{r}
+# segundo ajuste refinado
+
+modelo_r2 <- refVARMA(modelo_r1, thres = 1.5) 
+```
+
+O segundo refinamento ocasionou os seguintes resultados: $AIC=-8,2242$ e $BIC=-7,9666$ (menores do que o primeiro refinamento), porém uma redução de apenas 2 parâmetros estimados. Então vamos parar o refinamento por aqui e vamos considerar esse último modelo como o final.
+
+Assim, temos que o modelo teórico é dado por
+
+```{r}
+knitr::include_graphics("modelo.png")
+```
+
+A primeira matriz da equação acima é o $c$, ao passo que a segunda, terceira e quatro matrizes são, nesta ordem, o $\phi_1$, $\phi_2$ e $\phi_3$. Notem que, embora o modelo proposto neste trabalho seja VARMA, ele se reduziu a uma representação VAR, já que $q=0$ (e por isso, não há o componente $\theta$ na forma funcional do modelo).
+
+De forma geral, ao analisar os resíduos, as funções de autocorrelação cruzadas estão bem comportadas, como podemos ver nos gráficos de CACF (autocorrelação cruzada) de cada uma das variáveis e de todas as combinações entre elas. Além disso, aplicamos o Teste de Ljung-Box ao nível de significância de 5% sobre os resíduos do modelo para verificar se existe correlação serial entre eles. Como podemos ver graficamente, os resíduos são independentes (nenhum ponto está sobre ou abaixo da linha pontilhada em azul). Sem contar nos gráficos das séries, que sugerem estacionariedade. Dito tudo isso, podemos concluir que o modelo é adequado aos nossos dados.
+
+```{r fig.cap='Gráficos ACF das variáveis de temperatura, velocidade do vento e precipitação.'}
+# gráficos ACF
+
+MTS::MTSdiag(modelo_r2)
+```
+
+Com a análise diagnóstico devidamente avaliada, podemos usar o modelo em questão para fazer previsões. É o que faremos na próxima subseção.
+
+#### Predição do modelo
+
+<br>
+
+Faremos a previsão dos valores futuros da temperatura considerando 1 ano e meio à frente. Como resultado, obtemos o gráfico da Figura 9. A previsão para a temperatura na cidade de Aracaju/SE para os próximos 18 meses segue a tendência sazonal dos últimos anos.
+
+```{r fig.cap='Gráfico para a previsão futura da temperatura para os próximos 18 meses.'}
+# predição de 1 ano e meio no futuro
+
+h <- 18
+
+# predição 
+
+predic <- VARMApred(modelo_r2, h = h)
+predic <- as.data.frame(predic)
+all_data <- c(serie[, "temperatura"], predic$pred.temperatura)
+index_pred <- match(c(predic$pred.temperatura), all_data)
+
+# gráfico da previsão
+
+plot(all_data,
+     type = "l", 
+     col = "blue", 
+     ylab = "temperatura",
+     xlab = "mês",
+     main = "Temperatura mensal (azul) + Predição (vermelho)")
+points(index_pred,
+       predic$pred.temperatura,
+       col = "red",
+       pch = 19,
+       type="l") 
+```
+
